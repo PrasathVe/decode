@@ -63,3 +63,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
   animate();
 });
+const canvas = document.getElementById("dustCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = 1000;
+canvas.height = 200;
+
+ctx.fillStyle = "white";
+ctx.font = "bold 120px Poppins";
+ctx.textAlign = "center";
+ctx.fillText("Titanium", canvas.width / 2, 130);
+
+const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+const particles = [];
+
+for (let y = 0; y < imageData.height; y += 3) {
+  for (let x = 0; x < imageData.width; x += 3) {
+    const i = (y * imageData.width + x) * 4;
+    if (imageData.data[i + 3] > 128) {
+      particles.push({
+        x,
+        y,
+        baseX: x,
+        baseY: y
+      });
+    }
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  particles.forEach(p => {
+    // subtle floating
+    p.x += (Math.random() - 0.5) * 0.8;
+    p.y += (Math.random() - 0.5) * 0.8;
+
+    ctx.fillRect(p.x, p.y, 1, 1);
+  });
+
+  requestAnimationFrame(animate);
+}
+
+animate();
