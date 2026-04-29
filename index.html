@@ -44,7 +44,7 @@
         Our Foundation Skill Assessment & Career Alignment S.I.G.N.A.L Framework helps you uncover your natural strengths and align your career with what truly fits you—so your effort finally leads to meaningful progress.
       </p>
 
-            <button class="hero-btn book"><a href="https://topmate.io/vijay_prasath10/2056409?utm_source=public_profile&utm_campaign=vijay_prasath10">Book a Session</a></button>
+            <button class="hero-btn book"><a href="https://topmate.io/vijay_prasath10/2056409?utm_source=public_profile&utm_campaign=vijay_prasath10">Book a Session - LIMITED SPOTS - FREE</a></button>
     </div>
 
     <div class="glass panel-right">
@@ -105,6 +105,13 @@
 
       </div>
   </section>
+  <section class="action-section">
+
+  <a href="foundation-skill-assessment.html"><div class="action-card"><span>Learn How Our Foundation Skill Assessment Works!</span><span class="arrow">→</span></div></a>
+
+  <a href="career-alignment.html"><div class="action-card"><span>Learn How Our Career Alignment Session Works!</span><span class="arrow">→</span></div></a>
+
+</section>
   <div class="wave">
     <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
       <path 
@@ -125,7 +132,7 @@
         <br><br>
         We provide consulting services for companies focused on QA system transformation, helping teams audit, decode, and improve their existing QA ecosystems by identifying gaps, inefficiencies, and outdated practices. Whether you're scaling, facing release quality issues, or stuck with legacy testing approaches, I bring structured insights and system thinking to align QA with real business outcomes.
   <br><br>
-  For individuals, We offer skill assessment and career alignment guidance helping you understand <b>who you are before choosing what to do</b>. Through deep skill analysis and pattern recognition, I provide clarity on the <b>right career path</b>, role fit, and <b>interview readiness</b>, so you can make confident, well-aligned career decisions instead of guessing.
+  For individuals, We offer foundation skill assessment and career alignment guidance helping you understand <b>who you are before choosing what to do</b>. Through deep skill analysis and pattern recognition, I provide clarity on the <b>right career path</b>, role fit, and <b>interview readiness</b>, so you can make confident, well-aligned career decisions instead of guessing.
 
       </p>
       <button class="hero-btn"><a href="contact.html">Contact Us</a></button>
@@ -140,7 +147,7 @@
       <div class="card" data-aos="fade-right">
         <div class="icon"><img src="pfp.png" class="img-ico-6"></div>
         <div class="content">
-          <h3>Skill Assessment & Career Alignment Consulting</h3>
+          <h3>Foundation Skill Assessment & Career Alignment </h3>
           <p>We help professionals and organizations identify, decode and align real skills with the right career direction.
   Our approach focuses on discovering the Natural Skill Pattern & Career Alignment Path
   With our S.I.G.N.A.L Framework assessment. This allows individuals to focus their efforts in the right direction instead of wasting years in the wrong one.</p>
@@ -179,11 +186,11 @@
     </div>
     
   </section>
-  <!-- <section class="testimonial-section">
+  <section class="testimonial-section">
   <div class="testimonial-container">
 
     <div class="testimonial-card">
-      <p class="quote">“This completely changed how I approached my career.”</p>
+      <p class="quote">“This completely changed how I approached my career clearly after understanding my strengths.”</p>
       <div class="user">
         <h4>Arjun K</h4>
         <span>Software Engineer</span>
@@ -207,7 +214,7 @@
     </div>
 
     <div class="testimonial-card">
-      <p class="quote">“We fixed major QA gaps within weeks.”</p>
+      <p class="quote">“It helped me understand my true potential.”</p>
       <div class="user">
         <h4>Vikram R</h4>
         <span>Tech Lead</span>
@@ -218,7 +225,7 @@
       <p class="quote">“This isn’t advice. It’s direction.”</p>
       <div class="user">
         <h4>Core Feedback</h4>
-        <span>From Clients</span>
+        <span>From Students</span>
       </div>
     </div>
 
@@ -231,7 +238,7 @@
     </div>
 
     <div class="testimonial-card">
-      <p class="quote">“Our QA became structured and measurable.”</p>
+      <p class="quote">“Discovered my true potential and found my passion.”</p>
       <div class="user">
         <h4>Company Client</h4>
         <span>Startup</span>
@@ -255,62 +262,33 @@
     </div>
 
   </div>
-</section> -->
-      <script src="script.js"></script>
-      <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const img = document.querySelector(".hero-img");
+</section>
+<h3 class="copyright">© 2026 Decodes. All rights reserved.</h3>
+<script>
+ document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.querySelector(".hamburger");
+  const navLinks = document.querySelector(".nav-links");
+  const links = document.querySelectorAll(".nav-links a");
 
-    if (!img) return;
+  if (!hamburger || !navLinks) return;
 
-    let mouseX = 0, mouseY = 0;
-    let currentX = 0, currentY = 0;
-    let time = 0;
-
-    document.addEventListener("mousemove", (e) => {
-      mouseX = (window.innerWidth / 2 - e.clientX) / 20;
-      mouseY = (window.innerHeight / 2 - e.clientY) / 20;
-    });
-
-    function animate() {
-      currentX += (mouseX - currentX) * 0.08;
-      currentY += (mouseY - currentY) * 0.08;
-
-      time += 0.03;
-      const floatY = Math.sin(time) * 12;
-
-      const scroll = window.scrollY * 0.15;
-
-      img.style.transform =
-        `translate3d(${currentX}px, ${currentY + floatY - scroll}px, 0)
-        rotateY(${currentX * 0.5}deg)
-        rotateX(${-currentY * 0.5}deg)
-        scale(1.05)`;
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-  const reveals = document.querySelectorAll(".reveal");
-
-  function revealOnScroll() {
-    const triggerBottom = window.innerHeight * 0.85;
-
-    reveals.forEach(el => {
-      const top = el.getBoundingClientRect().top;
-
-      if (top < triggerBottom) {
-        el.classList.add("active");
-      }
-    });
-  }
-
-  window.addEventListener("scroll", revealOnScroll);
-  revealOnScroll();
+  // Toggle menu
+  hamburger.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+    hamburger.classList.toggle("open");
   });
+
+  // Close menu when clicking a link
+  links.forEach(link => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("active");
+      hamburger.classList.remove("open");
+    });
+  });
+});
   </script>
 
-  </script>
+
   </body>
   </html>
 

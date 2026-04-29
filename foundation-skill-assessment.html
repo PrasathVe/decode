@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="foundation-skill-assessment.css">
+    <title>Foundation Skill Assessment for Students & Young Professionals</title>
+    <meta name="description" content="Discover your real strengths with a foundation skill assessment designed for students and young professionals. Get clarity on skills, growth areas, and career direction.">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+   <section class="hero">
+
+  <div class="container">
+
+    <h1 class="fade">Foundation Skill Assessment</h1>
+
+    <p class="subtitle fade">
+      Discover Your Core Strengths Before Choosing the Wrong Path
+    </p>
+
+    <p class="description fade">
+      Many students and young professionals struggle because they never truly understand their natural strengths, learning style, or core abilities.
+    </p>
+
+    <div class="benefits">
+      <div class="pill fade">Understand your strengths</div>
+      <div class="pill fade">Identify growth areas</div>
+      <div class="pill fade">Improve career direction</div>
+      <div class="pill fade">Gain confidence</div>
+    </div>
+    <a target="_blank" href="https://topmate.io/vijay_prasath10/2056409?utm_source=public_profile&utm_campaign=vijay_prasath10" class="cta fade">Book Your Free Session - LIMITED SPOTS AVAILABLE</a>
+
+    <a href="index.html" class="cta fade">Go Back</a>
+
+  </div>
+
+</section>
+<section class="about">
+
+  <div class="about-container">
+    
+    <h2 class="fade">What Is a Foundation Skill Assessment?</h2>
+
+    <p class="fade">
+      A foundation skill assessment is a structured evaluation designed to identify an individual’s natural strengths, problem-solving abilities, communication patterns, analytical thinking, creativity, and learning behavior.
+    </p>
+
+    <p class="fade">
+      This assessment helps students and professionals gain clarity before making major educational or career decisions.
+    </p>
+
+  </div>
+
+</section>
+<section class="discover">
+
+  <h2>What You Will Discover</h2>
+
+  <div class="slider" id="slider">
+
+    <div class="slide">
+      <h3>Strength Analysis</h3>
+      <p>Understand where your natural abilities stand out.</p>
+    </div>
+
+    <div class="slide">
+      <h3>Learning Patterns</h3>
+      <p>Discover how you process and absorb information best.</p>
+    </div>
+
+    <div class="slide">
+      <h3>Career Compatibility</h3>
+      <p>Identify careers that align with your strengths.</p>
+    </div>
+
+    <div class="slide">
+      <h3>Skill Gaps</h3>
+      <p>Find areas that need improvement for future growth.</p>
+    </div>
+
+    <div class="slide">
+      <h3>Decision Clarity</h3>
+      <p>Reduce confusion and gain direction.</p>
+    </div>
+
+  </div>
+
+</section>
+<section class="process">
+
+  <h2>How the Session Works</h2>
+
+  <div class="timeline">
+
+    <div class="step">
+      <h3>Step 1 — Book the Free Session ( Free For Only 5 People )</h3>
+      <p>Book your free session now while spots are available!</p>
+    </div>
+
+    <div class="step">
+      <h3>Step 2 — Form Evaluation</h3>
+      <p>Our professional assessors will send you a form for you to fill out</p>
+    </div>
+
+    <div class="step">
+      <h3>Step 3 — Scheduled Session</h3>
+      <p>Professionals will join the scheduled session to discuss your results.</p>
+    </div>
+
+    <div class="step">
+      <h3>Step 4 — Career Alignment Discussion</h3>
+      <p>Understand how your skills connect to future opportunities.</p>
+    </div>
+
+  </div>
+
+</section>
+<section class="faq">
+
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq-item">
+    <button>How long does the session take?</button>
+    <p>Usually between 15 to 30 minutes.</p>
+  </div>
+
+  <div class="faq-item">
+    <button>Is this only for students?</button>
+    <p>No. It is useful for both students and professionals.</p>
+  </div>
+
+  <div class="faq-item">
+    <button>Will I receive career guidance?</button>
+    <p>Yes. The session is designed to help with career alignment and clarity.</p>
+  </div>
+
+  <div class="faq-item">
+    <button>Is this a psychological test?</button>
+    <p>No. It focuses on skills, strengths, thinking patterns, and career alignment.</p>
+  </div>
+
+</section>
+<script >const elements = document.querySelectorAll('.fade');
+
+const reveal = () => {
+  const trigger = window.innerHeight * 0.85;
+
+  elements.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if (top < trigger) {
+      el.classList.add('show');
+    }
+  });
+};
+
+window.addEventListener('scroll', reveal);
+window.addEventListener('load', reveal);
+
+
+const items = document.querySelectorAll('.faq-item button');
+
+items.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const p = btn.nextElementSibling;
+    p.style.display = p.style.display === 'block' ? 'none' : 'block';
+  });
+});
+
+const slider = document.getElementById('slider');
+
+let isDown = false;
+let startX;
+let scrollLeft;
+
+slider.addEventListener('mousedown', (e) => {
+  isDown = true;
+  slider.style.cursor = 'grabbing';
+  startX = e.pageX - slider.offsetLeft;
+  scrollLeft = slider.scrollLeft;
+});
+
+slider.addEventListener('mouseleave', () => {
+  isDown = false;
+  slider.style.cursor = 'grab';
+});
+
+slider.addEventListener('mouseup', () => {
+  isDown = false;
+  slider.style.cursor = 'grab';
+});
+
+slider.addEventListener('mousemove', (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  const x = e.pageX - slider.offsetLeft;
+  const walk = (x - startX) * 2;
+  slider.scrollLeft = scrollLeft - walk;
+});
+</script>
+</body>
+</html>
