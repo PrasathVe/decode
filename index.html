@@ -1,294 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decodes - Skill Assessment</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="services.css">
+    <link rel="icon" href="icon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet"/>
 
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Decodes - Skill Assessment</title>
-      <link rel="stylesheet" href="style.css">
-      <link rel="stylesheet" href="services.css">
-      <link rel="icon" href="icon.ico" type="image/x-icon" />
-      
-  </head>
-  <body>
-    <section class="Landing">
+    <!-- ── Chatbot Widget Styles ── -->
+    <style>
+      /* ── Floating launcher button ── */
+      #chat-launcher {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: #808000;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 0 0 rgba(128,128,0,0.5);
+        animation: chat-pulse 2.5s infinite;
+        transition: transform 0.2s;
+        z-index: 9999;
+      }
+      #chat-launcher:hover { transform: scale(1.1); }
+      #chat-launcher svg { width: 28px; height: 28px; }
+      @keyframes chat-pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(128,128,0,0.5); }
+        70%  { box-shadow: 0 0 0 14px rgba(128,128,0,0); }
+        100% { box-shadow: 0 0 0 0 rgba(128,128,0,0); }
+      }
 
-  <nav class="navbar1">
+      /* ── Chat window ── */
+      #chat-window {
+        position: fixed;
+        bottom: 104px;
+        right: 32px;
+        width: 380px;
+        height: 560px;
+        background: #111;
+        border: 1px solid #2a2a2a;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(128,128,0,0.15);
+        transform: scale(0.85) translateY(20px);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 9998;
+      }
+      #chat-window.open {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        pointer-events: all;
+      }
 
-  <div class="logo"><img src="pfpp.png" alt=""></div>
+      /* ── Header ── */
+      .chat-header {
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid #1e1e1e;
+        background: #141414;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-shrink: 0;
+      }
+      .bot-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #808000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        flex-shrink: 0;
+      }
+      .chat-header-info h3 {
+        font-family: 'Syne', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        color: #f0ede6;
+        letter-spacing: 0.02em;
+      }
+      .chat-status-dot {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 10px;
+        color: #555;
+        font-family: 'DM Mono', monospace;
+        margin-top: 2px;
+      }
+      .chat-status-dot::before {
+        content: '';
+        width: 6px;
+        height: 6px;
+        background: #4ade80;
+        border-radius: 50%;
+        animation: chat-blink 2s infinite;
+      }
+      @keyframes chat-blink {
+        0%,100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
 
-  <ul class="nav-links">
-  <li><a href="#">Home</a></li>
-  <li><a href="#about">About</a></li>
-  <li><a href="#services">Services</a></li>
-  <li><a href="contact.html">Reach Out</a></li>
-  </ul>
+      /* ── Suggested questions ── */
+      .suggested-questions {
+        padding: 14px 16px 6px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+      .suggested-label {
+        font-size: 9px;
+        letter-spacing: 0.12em;
+        color: #444;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+        font-family: 'DM Mono', monospace;
+      }
+      .q-pill {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 11px;
+        color: #a0a0a0;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+        font-family: 'DM Mono', monospace;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: space-between;
+      }
+      .q-pill:hover {
+        background: #222;
+        border-color: #808000;
+        color: #c8c800;
+      }
+      .q-pill .q-arrow { opacity: 0.4; transition: opacity 0.2s; }
+      .q-pill:hover .q-arrow { opacity: 1; }
 
-  <div class="hamburger">
-  <span></span>
-  <span></span>
-  <span></span>
-  </div>
+      /* ── Messages area ── */
+      #chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 14px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        scrollbar-width: thin;
+        scrollbar-color: #2a2a2a transparent;
+      }
+      #chat-messages::-webkit-scrollbar { width: 4px; }
+      #chat-messages::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 4px; }
 
-  </nav>
+      .chat-msg {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        animation: chatFadeUp 0.3s ease forwards;
+        opacity: 0;
+      }
+      @keyframes chatFadeUp {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      .chat-msg.user { flex-direction: row-reverse; }
+      .chat-bubble {
+        max-width: 75%;
+        padding: 10px 14px;
+        border-radius: 16px;
+        font-size: 12px;
+        line-height: 1.6;
+        font-family: 'DM Mono', monospace;
+      }
+      .chat-msg.bot .chat-bubble {
+        background: #1c1c1c;
+        border: 1px solid #272727;
+        color: #d4d0c8;
+        border-bottom-left-radius: 4px;
+      }
+      .chat-msg.user .chat-bubble {
+        background: #808000;
+        color: #fff;
+        font-weight: 500;
+        border-bottom-right-radius: 4px;
+      }
+      .chat-msg-time {
+        font-size: 9px;
+        color: #333;
+        margin-top: 2px;
+        letter-spacing: 0.06em;
+        font-family: 'DM Mono', monospace;
+      }
+      .chat-mini-avatar {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #1e1e1e;
+        border: 1px solid #2a2a2a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        flex-shrink: 0;
+      }
 
+      /* ── Typing indicator ── */
+      .chat-typing { display: flex; gap: 4px; padding: 4px 0; }
+      .chat-typing span {
+        width: 6px; height: 6px;
+        background: #444;
+        border-radius: 50%;
+        animation: chat-bounce 1.2s infinite;
+      }
+      .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+      .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+      @keyframes chat-bounce {
+        0%,80%,100% { transform: translateY(0); }
+        40% { transform: translateY(-6px); background: #808000; }
+      }
 
-  <div class="landing-grid">
+      /* ── Input bar ── */
+      .chat-input-area {
+        padding: 12px 14px;
+        border-top: 1px solid #1e1e1e;
+        background: #141414;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      #chat-input {
+        flex: 1;
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 12px;
+        padding: 9px 14px;
+        font-size: 12px;
+        color: #f0ede6;
+        font-family: 'DM Mono', monospace;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      #chat-input::placeholder { color: #444; }
+      #chat-input:focus { border-color: #808000; }
+      #chat-send-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: #808000;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      #chat-send-btn:hover { background: #6a6a00; transform: scale(1.05); }
+      #chat-send-btn:active { transform: scale(0.96); }
+      #chat-send-btn svg { width: 16px; height: 16px; }
 
-    <div class="glass panel-left">
-      <h1>
-        Discover Your <span class="highlight">Real Skill</span>
-      </h1>
+      @media (max-width: 480px) {
+        #chat-window { width: calc(100vw - 24px); right: 12px; }
+        #chat-launcher { right: 20px; bottom: 20px; }
+      }
+    </style>
+</head>
+<body>
+  <section class="Landing">
 
-      <p>
-        Our Skill Assessment & Career Alignment S.I.G.N.A.L Framework helps you uncover your natural strengths and align your career with what truly fits you—so your effort finally leads to meaningful progress.
-      </p>
-
-            <button class="hero-btn book"><a href="https://topmate.io/decodes/2082631?utm_source=public_profile&utm_campaign=decodes">Discover Your Skill - AT JUST ₹299</a></button>
-    </div>
-
-    <div class="glass panel-right">
-      <h1>
-          Optimize Your <span class="highlight">QA System</span>
-      </h1>
-
-      <p>
-       We Audit, decode, and transform the existing QA ecosystems. identifying gaps, inefficiencies, and outdated practices. Whether you're scaling, struggling with release quality, or stuck in legacy testing approaches, We bring structured insights to align QA with real business outcomes and possible AI inclusions.
-      </p>
-            <button class="hero-btn book"><a href="https://topmate.io/decodes/2083915">Book a Session for Initial Discussion</a></button>
-
-    </div>
-
-  </div>
-
-
-
-  </section>
-  <section class="small-section">
-  <div class="grids">
-    <div class="track">
-      
-  <div class="grid">
-    <h1>The Problem</h1>
-    <p>Many people work in roles mismatched to their skills, causing poor performance, frustration, and low engagement.</p>
-  </div>
-
-  <div class="grid">
-    <h1>Our Methodology</h1>
-    <p>With our S.I.G.N.A.L Framework, we identify individual strengths and align them with suitable roles or tasks for outcomes and satisfaction.</p>
-  </div>
-
-  <div class="grid">
-    <h1>Who This Is For</h1>
-    <p>The Skill Assessment is designed for professionals who feel stuck, misaligned, or unsure about their next career move</p>
-  </div>
-
-  <div class="grid">
-    <h1>Why Skill Alignment</h1>
-    <p>Skill alignment matches abilities with roles, boosting productivity, confidence, satisfaction, while reducing stress, burnout, and inefficiency.</p>
-  </div>
-
-  <div class="grid">
-    <h1>Struggling QA Systems</h1>
-    <p>Built for organizations stuck with unstable releases, high defect leakage, and reactive QA processes that slow down delivery.</p>
-  </div>
-
-  <div class="grid">
-    <h1>Legacy Transformation</h1>
-    <p>Ideal for companies burdened by outdated testing approaches, manual-heavy processes, and fragmented QA ecosystems.</p>
-  </div>
-
-<div class="grid">
-    <h1>Decision Makers</h1>
-    <p>Created for CTOs, QA leaders, and engineering heads looking to align quality engineering with business outcomes, AI Inclusions and ROI.</p>
-  </div>
-
+    <nav class="navbar1">
+      <div class="logo"><img src="pfpp.png" alt=""></div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="contact.html">Reach Out</a></li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
+    </nav>
+
+    <div class="landing-grid">
+      <div class="glass panel-left">
+        <h1>Discover Your <span class="highlight">Real Skill</span></h1>
+        <p>Our Skill Assessment & Career Alignment S.I.G.N.A.L Framework helps you uncover your natural strengths and align your career with what truly fits you—so your effort finally leads to meaningful progress.</p>
+        <button class="hero-btn book"><a href="https://topmate.io/decodes/2082631?utm_source=public_profile&utm_campaign=decodes">Discover Your Skill - AT JUST ₹499</a></button>
+      </div>
+      <div class="glass panel-right">
+        <h1>Optimize Your <span class="highlight">QA System</span></h1>
+        <p>We Audit, decode, and transform the existing QA ecosystems. identifying gaps, inefficiencies, and outdated practices. Whether you're scaling, struggling with release quality, or stuck in legacy testing approaches, We bring structured insights to align QA with real business outcomes and possible AI inclusions.</p>
+        <button class="hero-btn book"><a href="https://topmate.io/decodes/2083915">Book a Session for Initial Discussion</a></button>
+      </div>
+    </div>
+
   </section>
+
+  <section class="small-section">
+    <div class="grids">
+      <div class="track">
+        <div class="grid">
+          <h1>The Problem</h1>
+          <p>Many people work in roles mismatched to their skills, causing poor performance, frustration, and low engagement.</p>
+        </div>
+        <div class="grid">
+          <h1>Our Methodology</h1>
+          <p>With our S.I.G.N.A.L Framework, we identify individual strengths and align them with suitable roles or tasks for outcomes and satisfaction.</p>
+        </div>
+        <div class="grid">
+          <h1>Who This Is For</h1>
+          <p>The Skill Assessment is designed for professionals who feel stuck, misaligned, or unsure about their next career move</p>
+        </div>
+        <div class="grid">
+          <h1>Why Skill Alignment</h1>
+          <p>Skill alignment matches abilities with roles, boosting productivity, confidence, satisfaction, while reducing stress, burnout, and inefficiency.</p>
+        </div>
+        <div class="grid">
+          <h1>Struggling QA Systems</h1>
+          <p>Built for organizations stuck with unstable releases, high defect leakage, and reactive QA processes that slow down delivery.</p>
+        </div>
+        <div class="grid">
+          <h1>Legacy Transformation</h1>
+          <p>Ideal for companies burdened by outdated testing approaches, manual-heavy processes, and fragmented QA ecosystems.</p>
+        </div>
+        <div class="grid">
+          <h1>Decision Makers</h1>
+          <p>Created for CTOs, QA leaders, and engineering heads looking to align quality engineering with business outcomes, AI Inclusions and ROI.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="action-section">
+    <a href="foundation-skill-assessment.html"><div class="action-card"><span>Learn How Our Skill Assessment Works!</span><span class="arrow">→</span></div></a>
+  </section>
 
-  <a href="foundation-skill-assessment.html"><div class="action-card"><span>Learn How Our Skill Assessment Works!</span><span class="arrow">→</span></div></a>
-
-    
-</section>
   <div class="wave">
     <svg viewBox="0 0 1440 200" preserveAspectRatio="none">
-      <path 
-        d="M0,100 C360,200 1080,0 1440,100 L1440,200 L0,200 Z" 
-        fill="#808000">
-      </path>
+      <path d="M0,100 C360,200 1080,0 1440,100 L1440,200 L0,200 Z" fill="#808000"></path>
     </svg>
   </div>
+
   <section class="about-section" id="about">
     <div class="about-container">
-
-      <!-- <img src="image.png" class="about-img" alt="About Image"> -->
-
       <h1 class="about-title">Why Decodes</h1>
-
       <p class="about-text">
         20 years in software quality engineering, with a focus on test automation, AI integration, and QA system transformation. We've sucessfully Initiated, Transformed and Optimized the QA systems with startups to Fortune 500s, helping them optimize their QA processes and align them with business goals.
         <br><br>
         We provide consulting services for companies focused on QA system transformation, helping teams audit, decode, and improve their existing QA ecosystems by identifying gaps, inefficiencies, and outdated practices. Whether you're scaling, facing release quality issues, or stuck with legacy testing approaches, I bring structured insights and system thinking to align QA with real business outcomes.
-  <br><br>
-  For individuals, We offer skill assessment and career alignment guidance helping you understand <b>who you are before choosing what to do</b>. Through deep skill analysis and pattern recognition, I provide clarity on the <b>right career path</b>, role fit, and <b>interview readiness</b>, so you can make confident, well-aligned career decisions instead of guessing.
-
+        <br><br>
+        For individuals, We offer skill assessment and career alignment guidance helping you understand <b>who you are before choosing what to do</b>. Through deep skill analysis and pattern recognition, I provide clarity on the <b>right career path</b>, role fit, and <b>interview readiness</b>, so you can make confident, well-aligned career decisions instead of guessing.
       </p>
       <button class="hero-btn"><a href="contact.html">Contact Us</a></button>
-
     </div>
   </section>
+
   <section class="services" id="services">
     <h2 class="title" data-aos="fade-down">Our Services</h2>
-
     <div class="services-container">
-
       <div class="card" data-aos="fade-right">
         <div class="icon"><img src="pfp.png" class="img-ico-6"></div>
         <div class="content">
-          <h3>Skill Assessment & Career Alignment </h3>
-          <p>We help professionals and organizations identify, decode and align real skills with the right career direction.
-  Our approach focuses on discovering the Natural Skill Pattern & Career Alignment Path
-  With our S.I.G.N.A.L Framework assessment. This allows individuals to focus their efforts in the right direction instead of wasting years in the wrong one.</p>
+          <h3>Skill Assessment & Career Alignment</h3>
+          <p>We help professionals and organizations identify, decode and align real skills with the right career direction. Our approach focuses on discovering the Natural Skill Pattern & Career Alignment Path With our S.I.G.N.A.L Framework assessment. This allows individuals to focus their efforts in the right direction instead of wasting years in the wrong one.</p>
         </div>
       </div>
-
-      
-
       <div class="card" data-aos="fade-right">
         <div class="icon"><img src="pfp.png" class="img-ico-6"></div>
         <div class="content">
           <h3>AI Driven QA Transformation Consulting</h3>
-          <p>QA & AI Maturity Assessment
-              Current QA Process Audit, Automation Coverage Analysis, AI Opportunity Mapping & Cost Leakage Analysis
-          </p>
+          <p>QA & AI Maturity Assessment, Current QA Process Audit, Automation Coverage Analysis, AI Opportunity Mapping & Cost Leakage Analysis</p>
         </div>
       </div>
-
       <div class="card" data-aos="fade-left">
         <div class="icon"><img src="pfp.png" class="img-ico-6"></div>
         <div class="content">
           <h3>QA Strategy & Implementation Roadmap</h3>
-          <p>Tool Strategy , Dev Ops Alignment, AI Assisted Test Generation & Governance & metrics framework</p>
+          <p>Tool Strategy, Dev Ops Alignment, AI Assisted Test Generation & Governance & metrics framework</p>
         </div>
       </div>
-  <div class="card" data-aos="fade-left">
+      <div class="card" data-aos="fade-left">
         <div class="icon"><img src="pfp.png" class="img-ico-6"></div>
         <div class="content">
           <h3>Advisory Retainer Services</h3>
-          <p>Monthly AI QA Steering 
-  KPI Tracking
-  Leadership Alignment
-  Governance & metrics framework</p>
+          <p>Monthly AI QA Steering, KPI Tracking, Leadership Alignment, Governance & metrics framework</p>
         </div>
       </div>
     </div>
-    
   </section>
+
   <section class="testimonial-section">
-  <div class="testimonial-container">
+    <div class="testimonial-container">
+      <div class="testimonial-card">
+        <p class="quote">"This completely changed how I approached my career clearly after understanding my strengths."</p>
+        <div class="user"><h4>Arjun K</h4><span>Software Engineer</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"Clarity I didn't get in 5 years, I got in one session."</p>
+        <div class="user"><h4>Priya M</h4><span>QA Analyst</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"Finally understood where my strengths actually lie."</p>
+        <div class="user"><h4>Rahul S</h4><span>Student</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"It helped me understand my true potential."</p>
+        <div class="user"><h4>Vikram R</h4><span>Tech Lead</span></div>
+      </div>
+      <div class="testimonial-card highlights">
+        <p class="quote">"This isn't advice. It's direction."</p>
+        <div class="user"><h4>Core Feedback</h4><span>From Students</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"Helped me align my career instead of guessing."</p>
+        <div class="user"><h4>Neha P</h4><span>Product Tester</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"Discovered my true potential and found my passion."</p>
+        <div class="user"><h4>Company Client</h4><span>Startup</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"I stopped switching paths after this."</p>
+        <div class="user"><h4>Karthik D</h4><span>Developer</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="quote">"Clear, practical, and brutally honest guidance."</p>
+        <div class="user"><h4>Ananya V</h4><span>Graduate</span></div>
+      </div>
+    </div>
+  </section>
 
-    <div class="testimonial-card">
-      <p class="quote">“This completely changed how I approached my career clearly after understanding my strengths.”</p>
-      <div class="user">
-        <h4>Arjun K</h4>
-        <span>Software Engineer</span>
+  <h3 class="copyright">© 2026 Decodes. All rights reserved.</h3>
+
+  <!-- ── Chatbot Widget HTML ── -->
+  <button id="chat-launcher" aria-label="Open chat">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </button>
+
+  <div id="chat-window">
+    <div class="chat-header">
+      <div class="bot-avatar">🎯</div>
+      <div class="chat-header-info">
+        <h3>Decodes Assistant</h3>
+        <div class="chat-status-dot">Online · Ask me anything</div>
       </div>
     </div>
 
-    <div class="testimonial-card">
-      <p class="quote">“Clarity I didn’t get in 5 years, I got in one session.”</p>
-      <div class="user">
-        <h4>Priya M</h4>
-        <span>QA Analyst</span>
-      </div>
+    <div class="suggested-questions" id="chat-suggestions">
+      <div class="suggested-label">✦ Quick questions</div>
+      <button class="q-pill" onclick="askQuestion(this)">What is the S.I.G.N.A.L Framework? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">How much does the Skill Assessment cost? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">What QA consulting services do you offer? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">Who is this service for? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">How do I book a session? <span class="q-arrow">→</span></button>
     </div>
 
-    <div class="testimonial-card">
-      <p class="quote">“Finally understood where my strengths actually lie.”</p>
-      <div class="user">
-        <h4>Rahul S</h4>
-        <span>Student</span>
-      </div>
-    </div>
+    <div id="chat-messages"></div>
 
-    <div class="testimonial-card">
-      <p class="quote">“It helped me understand my true potential.”</p>
-      <div class="user">
-        <h4>Vikram R</h4>
-        <span>Tech Lead</span>
-      </div>
+    <div class="chat-input-area">
+      <input id="chat-input" type="text" placeholder="Ask anything about Decodes…" autocomplete="off"/>
+      <button id="chat-send-btn" onclick="sendChatMessage()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
     </div>
-
-    <div class="testimonial-card highlights">
-      <p class="quote">“This isn’t advice. It’s direction.”</p>
-      <div class="user">
-        <h4>Core Feedback</h4>
-        <span>From Students</span>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <p class="quote">“Helped me align my career instead of guessing.”</p>
-      <div class="user">
-        <h4>Neha P</h4>
-        <span>Product Tester</span>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <p class="quote">“Discovered my true potential and found my passion.”</p>
-      <div class="user">
-        <h4>Company Client</h4>
-        <span>Startup</span>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <p class="quote">“I stopped switching paths after this.”</p>
-      <div class="user">
-        <h4>Karthik D</h4>
-        <span>Developer</span>
-      </div>
-    </div>
-
-    <div class="testimonial-card">
-      <p class="quote">“Clear, practical, and brutally honest guidance.”</p>
-      <div class="user">
-        <h4>Ananya V</h4>
-        <span>Graduate</span>
-      </div>
-    </div>
-
   </div>
-</section>
-<h3 class="copyright">© 2026 Decodes. All rights reserved.</h3>
-<script>
- document.addEventListener("DOMContentLoaded", () => {
-  const hamburger = document.querySelector(".hamburger");
-  const navLinks = document.querySelector(".nav-links");
-  const links = document.querySelectorAll(".nav-links a");
+  <!-- ── End Chatbot Widget ── -->
 
-  if (!hamburger || !navLinks) return;
-
-  // Toggle menu
-  hamburger.addEventListener("click", () => {
-    navLinks.classList.toggle("active");
-    hamburger.classList.toggle("open");
-  });
-
-  // Close menu when clicking a link
-  links.forEach(link => {
-    link.addEventListener("click", () => {
-      navLinks.classList.remove("active");
-      hamburger.classList.remove("open");
+  <script>
+    // ── Navbar hamburger ──
+    document.addEventListener("DOMContentLoaded", () => {
+      const hamburger = document.querySelector(".hamburger");
+      const navLinks  = document.querySelector(".nav-links");
+      const links     = document.querySelectorAll(".nav-links a");
+      if (!hamburger || !navLinks) return;
+      hamburger.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+        hamburger.classList.toggle("open");
+      });
+      links.forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("active");
+          hamburger.classList.remove("open");
+        });
+      });
     });
-  });
-});
   </script>
 
+  <script>
+    const SYSTEM_PROMPT = `You are a warm, knowledgeable assistant for Decodes — a consulting company founded by an expert with 20 years in software quality engineering.
 
-  </body>
-  </html>
+Answer questions helpfully and concisely (2-3 sentences). Be professional but approachable.
+If asked something outside your knowledge, direct the user to the contact page at contact.html.
 
+Key facts about Decodes:
 
+SERVICES:
+1. Skill Assessment & Career Alignment (₹499) — Uses the proprietary S.I.G.N.A.L Framework to identify a person's natural strengths and align them with the right career path. Helps professionals who feel stuck, misaligned, or unsure of their next move. Book at: https://topmate.io/decodes/2082631
+2. AI Driven QA Transformation Consulting — Full audit of current QA processes, automation coverage analysis, AI opportunity mapping, and cost leakage analysis.
+3. QA Strategy & Implementation Roadmap — Tool strategy, DevOps alignment, AI-assisted test generation, and governance & metrics framework.
+4. Advisory Retainer Services — Monthly AI QA steering, KPI tracking, leadership alignment.
+
+THE S.I.G.N.A.L FRAMEWORK:
+A proprietary methodology that identifies individual natural skill patterns and aligns them with suitable career roles. Helps people understand who they are before choosing what to do.
+
+WHO IT'S FOR:
+- Individuals: Professionals feeling stuck, misaligned, or unsure about their next career move; students and graduates; developers, QA analysts, tech leads.
+- Organizations: CTOs, QA leaders, engineering heads dealing with unstable releases, high defect leakage, legacy testing, or slow delivery.
+
+EXPERIENCE: 20 years in software quality engineering. Worked with startups to Fortune 500 companies.
+
+BOOKING: Skill Assessment session at https://topmate.io/decodes/2082631 | QA Consulting initial discussion at https://topmate.io/decodes/2083915
+
+CONTACT: Visit contact.html on the website.`;
+
+    const launcher    = document.getElementById('chat-launcher');
+    const chatWindow  = document.getElementById('chat-window');
+    const inputEl     = document.getElementById('chat-input');
+    const messagesEl  = document.getElementById('chat-messages');
+    const suggestEl   = document.getElementById('chat-suggestions');
+    let isOpen        = false;
+    let chatHistory   = [];
+
+    launcher.addEventListener('click', () => {
+      isOpen = !isOpen;
+      chatWindow.classList.toggle('open', isOpen);
+      launcher.innerHTML = isOpen
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
+      if (isOpen && messagesEl.children.length === 0) {
+        addChatMessage('bot', "Hey! 👋 I'm the Decodes assistant. Ask me about our Skill Assessment, S.I.G.N.A.L Framework, or QA consulting services.");
+      }
+    });
+
+    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendChatMessage(); });
+
+    function askQuestion(btn) {
+      const text = btn.querySelector('.q-arrow') 
+        ? btn.textContent.replace('→','').trim() 
+        : btn.textContent.trim();
+      suggestEl.style.display = 'none';
+      handleChat(text);
+    }
+
+    function sendChatMessage() {
+      const text = inputEl.value.trim();
+      if (!text) return;
+      inputEl.value = '';
+      suggestEl.style.display = 'none';
+      handleChat(text);
+    }
+
+    function handleChat(text) {
+      addChatMessage('user', text);
+      chatHistory.push({ role: 'user', content: text });
+      showChatTyping();
+      callClaude();
+    }
+
+    function addChatMessage(role, text) {
+      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const div = document.createElement('div');
+      div.className = `chat-msg ${role}`;
+      div.innerHTML = role === 'bot'
+        ? `<div class="chat-mini-avatar">🎯</div>
+           <div>
+             <div class="chat-bubble">${text}</div>
+             <div class="chat-msg-time">${now}</div>
+           </div>`
+        : `<div>
+             <div class="chat-bubble">${text}</div>
+             <div class="chat-msg-time" style="text-align:right">${now}</div>
+           </div>`;
+      messagesEl.appendChild(div);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    let typingEl = null;
+    function showChatTyping() {
+      typingEl = document.createElement('div');
+      typingEl.className = 'chat-msg bot';
+      typingEl.innerHTML = `<div class="chat-mini-avatar">🎯</div>
+        <div class="chat-bubble" style="padding:10px 14px">
+          <div class="chat-typing"><span></span><span></span><span></span></div>
+        </div>`;
+      messagesEl.appendChild(typingEl);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    function removeChatTyping() {
+      if (typingEl) { typingEl.remove(); typingEl = null; }
+    }
+
+    async function callClaude() {
+      try {
+        const res = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 1000,
+            system: SYSTEM_PROMPT,
+            messages: chatHistory
+          })
+        });
+        const data = await res.json();
+        const reply = data.content?.find(b => b.type === 'text')?.text || "Sorry, I couldn't get a response right now.";
+        removeChatTyping();
+        addChatMessage('bot', reply);
+        chatHistory.push({ role: 'assistant', content: reply });
+      } catch (err) {
+        removeChatTyping();
+        addChatMessage('bot', "Something went wrong. Please try again or visit our contact page.");
+      }
+    }
+  </script>
+
+</body>
+</html>
