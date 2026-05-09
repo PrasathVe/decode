@@ -614,3 +614,66 @@ nav {
     display: flex;
   }
 }
+/* ── Restart Chat Button ───────────────────────── */
+.restart-btn{
+  margin-top: 14px;
+  padding: 10px 16px;
+  border: 1px solid rgba(128,128,0,0.35);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    #808000 0%,
+    #6f6f00 100%
+  );
+  color: #fff;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow:
+    0 8px 20px rgba(128,128,0,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* icon */
+.restart-btn::before{
+  content: "↺";
+  font-size: 13px;
+  transition: transform 0.4s ease;
+}
+
+/* hover */
+.restart-btn:hover{
+  transform: translateY(-2px) scale(1.03);
+  background: linear-gradient(
+    135deg,
+    #909000 0%,
+    #7a7a00 100%
+  );
+  box-shadow:
+    0 12px 28px rgba(128,128,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.18);
+}
+
+/* rotate icon */
+.restart-btn:hover::before{
+  transform: rotate(180deg);
+}
+
+/* click */
+.restart-btn:active{
+  transform: scale(0.96);
+}
+
+/* mobile */
+@media (max-width: 480px){
+  .restart-btn{
+    width: 100%;
+    justify-content: center;
+  }
+}

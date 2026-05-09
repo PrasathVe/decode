@@ -415,7 +415,7 @@
         <div class="user"><h4>Arjun K</h4><span>Software Engineer</span></div>
       </div>
       <div class="testimonial-card">
-        <p class="quote">"Clarity I didn't get in 5 years, I got in one session."</p>
+        <p class="quote">"Clarity I didn't get in 5 years, I got in one report."</p>
         <div class="user"><h4>Priya M</h4><span>QA Analyst</span></div>
       </div>
       <div class="testimonial-card">
@@ -471,9 +471,10 @@
       <div class="suggested-label">✦ Quick questions</div>
       <button class="q-pill" onclick="askQuestion(this)">What is the S.I.G.N.A.L Framework? <span class="q-arrow">→</span></button>
       <button class="q-pill" onclick="askQuestion(this)">How much does the Skill Assessment cost? <span class="q-arrow">→</span></button>
-      <button class="q-pill" onclick="askQuestion(this)">What QA consulting services do you offer? <span class="q-arrow">→</span></button>
       <button class="q-pill" onclick="askQuestion(this)">Who is this service for? <span class="q-arrow">→</span></button>
-      <button class="q-pill" onclick="askQuestion(this)">How do I book a session? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">How do I get the tests? <span class="q-arrow">→</span></button>
+      <button class="q-pill" onclick="askQuestion(this)">What to do after payment?<span class="q-arrow">→</span></button>
+
     </div>
 
     <div id="chat-messages"></div>
@@ -510,133 +511,294 @@
     });
   </script>
 
+  <!-- ── Chatbot Widget Script (Static — no API needed) ── -->
   <script>
-    const SYSTEM_PROMPT = `You are a warm, knowledgeable assistant for Decodes — a consulting company founded by an expert with 20 years in software quality engineering.
+  // ── Static responses ─────────────────────────────────────────────
+  const RESPONSES = [
+    {
+      keywords: ['signal', 's.i.g.n.a.l', 'framework', 'methodology'],
+      answer: `
+        The S.I.G.N.A.L Framework is our proprietary methodology that identifies your natural skill patterns and maps them to the right career path.
 
-Answer questions helpfully and concisely (2-3 sentences). Be professional but approachable.
-If asked something outside your knowledge, direct the user to the contact page at contact.html.
+        It goes beyond generic advice — it decodes <b>who you are</b> so you can make confident, well-aligned career decisions. 🎯
+        <br><br>
 
-Key facts about Decodes:
+        <button onclick="restartChat()" class="restart-btn">
+          Restart Chat
+        </button>
+      `
+    },
 
-SERVICES:
-1. Skill Assessment & Career Alignment (₹499) — Uses the proprietary S.I.G.N.A.L Framework to identify a person's natural strengths and align them with the right career path. Helps professionals who feel stuck, misaligned, or unsure of their next move. Book at: https://topmate.io/decodes/2082631
-2. AI Driven QA Transformation Consulting — Full audit of current QA processes, automation coverage analysis, AI opportunity mapping, and cost leakage analysis.
-3. QA Strategy & Implementation Roadmap — Tool strategy, DevOps alignment, AI-assisted test generation, and governance & metrics framework.
-4. Advisory Retainer Services — Monthly AI QA steering, KPI tracking, leadership alignment.
+    {
+      keywords: ['price', 'pricing', 'cost', 'how much', '#5', 'fee', 'charge'],
+      answer: `
+        The Skill Assessment & Career Alignment Tests is just <b>$5</b> — a one-time investment that gives you clarity most people spend years searching for.
 
-THE S.I.G.N.A.L FRAMEWORK:
-A proprietary methodology that identifies individual natural skill patterns and aligns them with suitable career roles. Helps people understand who they are before choosing what to do.
+        You can book it directly at
+        <a href='https://topmate.io/decodes/2082631'
+           target='_blank'
+           style='color:#808000'>
+           topmate.io/decodes
+        </a>. 💡
+        <br><br>
 
-WHO IT'S FOR:
-- Individuals: Professionals feeling stuck, misaligned, or unsure about their next career move; students and graduates; developers, QA analysts, tech leads.
-- Organizations: CTOs, QA leaders, engineering heads dealing with unstable releases, high defect leakage, legacy testing, or slow delivery.
+        <button onclick="restartChat()" class="restart-btn">
+          Restart Chat
+        </button>
+      `
+    },
 
-EXPERIENCE: 20 years in software quality engineering. Worked with startups to Fortune 500 companies.
+    {
+      keywords: ['payment', 'money', 'next step'],
+      answer: `
+        After payment, you'll receive an instant confirmation with access to your questionnaire.
 
-BOOKING: Skill Assessment session at https://topmate.io/decodes/2082631 | QA Consulting initial discussion at https://topmate.io/decodes/2083915
+        Fill the pre-assessment form followed by the S.I.G.N.A.L Assessment form and you're all set! 🙌
+        <br><br>
 
-CONTACT: Visit contact.html on the website.`;
+        <button onclick="restartChat()" class="restart-btn">
+          Restart Chat
+        </button>
+      `
+    },
 
-    const launcher    = document.getElementById('chat-launcher');
-    const chatWindow  = document.getElementById('chat-window');
-    const inputEl     = document.getElementById('chat-input');
-    const messagesEl  = document.getElementById('chat-messages');
-    const suggestEl   = document.getElementById('chat-suggestions');
-    let isOpen        = false;
-    let chatHistory   = [];
+    {
+      keywords: ['test', 'tests', 'get', 'access'],
+      answer: `
+        Booking is super easy!
 
-    launcher.addEventListener('click', () => {
-      isOpen = !isOpen;
-      chatWindow.classList.toggle('open', isOpen);
-      launcher.innerHTML = isOpen
-        ? `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`
-        : `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`;
-      if (isOpen && messagesEl.children.length === 0) {
-        addChatMessage('bot', "Hey! 👋 I'm the Decodes assistant. Ask me about our Skill Assessment, S.I.G.N.A.L Framework, or QA consulting services.");
+        <br><br>
+
+        <b>Skill Assessment:</b><br>
+        <a href='https://topmate.io/decodes/2082631'
+           target='_blank'
+           style='color:#808000'>
+           Book Here
+        </a>
+
+        <br><br>
+
+        <b>QA Consulting:</b><br>
+        <a href='https://topmate.io/decodes/2083915'
+           target='_blank'
+           style='color:#808000'>
+           Book Here
+        </a>
+
+        <br><br>
+
+        <button onclick="restartChat()" class="restart-btn">
+          Restart Chat
+        </button>
+      `
+    },
+
+    {
+      keywords: ['hi', 'hello', 'hey'],
+      answer: `
+        Hey there! 👋
+
+        Ask me anything about:
+        <br><br>
+
+        • Skill Assessment<br>
+        • S.I.G.N.A.L Framework<br>
+        • QA Consulting Services
+
+        <br><br>
+
+        <button onclick="restartChat()" class="restart-btn">
+          Restart Chat
+        </button>
+      `
+    }
+  ];
+
+  const FALLBACK = `
+    I'm not sure about that specific question.
+
+    Visit our
+    <a href='contact.html' style='color:#808000'>
+      <b>Contact Page</b>
+    </a>
+    and we'll help you personally. 🙏
+
+    <br><br>
+
+    <button onclick="restartChat()" class="restart-btn">
+      Restart Chat
+    </button>
+  `;
+
+  // ── Elements ─────────────────────────────────────────────────────
+  const launcher   = document.getElementById('chat-launcher');
+  const chatWindow = document.getElementById('chat-window');
+  const inputEl    = document.getElementById('chat-input');
+  const messagesEl = document.getElementById('chat-messages');
+  const suggestEl  = document.getElementById('chat-suggestions');
+
+  let isOpen = false;
+
+  // ── Open / Close chat ────────────────────────────────────────────
+  launcher.addEventListener('click', () => {
+    isOpen = !isOpen;
+
+    chatWindow.classList.toggle('open', isOpen);
+
+    launcher.innerHTML = isOpen
+      ? `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>`
+      : `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>`;
+
+    if (isOpen && messagesEl.children.length === 0) {
+      addChatMessage(
+        'bot',
+        "Hey! 👋 I'm the Decodes assistant. Ask me anything about our services."
+      );
+    }
+  });
+
+  // ── Enter key send ───────────────────────────────────────────────
+  inputEl.addEventListener('keydown', e => {
+    if (e.key === 'Enter') {
+      sendChatMessage();
+    }
+  });
+
+  // ── Suggested question click ─────────────────────────────────────
+  function askQuestion(btn) {
+    const text = btn.textContent.replace('→', '').trim();
+
+    suggestEl.style.display = 'none';
+
+    handleChat(text);
+  }
+
+  // ── Send message ─────────────────────────────────────────────────
+  function sendChatMessage() {
+    const text = inputEl.value.trim();
+
+    if (!text) return;
+
+    inputEl.value = '';
+
+    suggestEl.style.display = 'none';
+
+    handleChat(text);
+  }
+
+  // ── Chat handler ─────────────────────────────────────────────────
+  function handleChat(text) {
+    addChatMessage('user', text);
+
+    showChatTyping();
+
+    setTimeout(() => {
+      removeChatTyping();
+
+      addChatMessage('bot', getResponse(text));
+
+    }, 700);
+  }
+
+  // ── Find response ────────────────────────────────────────────────
+  function getResponse(text) {
+    const lower = text.toLowerCase();
+
+    for (const item of RESPONSES) {
+      if (item.keywords.some(kw => lower.includes(kw))) {
+        return item.answer;
       }
+    }
+
+    return FALLBACK;
+  }
+
+  // ── Add message to UI ────────────────────────────────────────────
+  function addChatMessage(role, html) {
+
+    const now = new Date().toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
     });
 
-    inputEl.addEventListener('keydown', e => { if (e.key === 'Enter') sendChatMessage(); });
+    const div = document.createElement('div');
 
-    function askQuestion(btn) {
-      const text = btn.querySelector('.q-arrow') 
-        ? btn.textContent.replace('→','').trim() 
-        : btn.textContent.trim();
-      suggestEl.style.display = 'none';
-      handleChat(text);
-    }
+    div.className = `chat-msg ${role}`;
 
-    function sendChatMessage() {
-      const text = inputEl.value.trim();
-      if (!text) return;
-      inputEl.value = '';
-      suggestEl.style.display = 'none';
-      handleChat(text);
-    }
+    div.innerHTML = role === 'bot'
+      ? `
+        <div class="chat-mini-avatar">🎯</div>
 
-    function handleChat(text) {
-      addChatMessage('user', text);
-      chatHistory.push({ role: 'user', content: text });
-      showChatTyping();
-      callClaude();
-    }
+        <div>
+          <div class="chat-bubble">${html}</div>
+          <div class="chat-msg-time">${now}</div>
+        </div>
+      `
+      : `
+        <div>
+          <div class="chat-bubble">${html}</div>
+          <div class="chat-msg-time" style="text-align:right">
+            ${now}
+          </div>
+        </div>
+      `;
 
-    function addChatMessage(role, text) {
-      const now = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      const div = document.createElement('div');
-      div.className = `chat-msg ${role}`;
-      div.innerHTML = role === 'bot'
-        ? `<div class="chat-mini-avatar">🎯</div>
-           <div>
-             <div class="chat-bubble">${text}</div>
-             <div class="chat-msg-time">${now}</div>
-           </div>`
-        : `<div>
-             <div class="chat-bubble">${text}</div>
-             <div class="chat-msg-time" style="text-align:right">${now}</div>
-           </div>`;
-      messagesEl.appendChild(div);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
+    messagesEl.appendChild(div);
 
-    let typingEl = null;
-    function showChatTyping() {
-      typingEl = document.createElement('div');
-      typingEl.className = 'chat-msg bot';
-      typingEl.innerHTML = `<div class="chat-mini-avatar">🎯</div>
-        <div class="chat-bubble" style="padding:10px 14px">
-          <div class="chat-typing"><span></span><span></span><span></span></div>
-        </div>`;
-      messagesEl.appendChild(typingEl);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-    function removeChatTyping() {
-      if (typingEl) { typingEl.remove(); typingEl = null; }
-    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
 
-    async function callClaude() {
-      try {
-        const res = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
-            system: SYSTEM_PROMPT,
-            messages: chatHistory
-          })
-        });
-        const data = await res.json();
-        const reply = data.content?.find(b => b.type === 'text')?.text || "Sorry, I couldn't get a response right now.";
-        removeChatTyping();
-        addChatMessage('bot', reply);
-        chatHistory.push({ role: 'assistant', content: reply });
-      } catch (err) {
-        removeChatTyping();
-        addChatMessage('bot', "Something went wrong. Please try again or visit our contact page.");
-      }
+  // ── Typing indicator ─────────────────────────────────────────────
+  let typingEl = null;
+
+  function showChatTyping() {
+
+    typingEl = document.createElement('div');
+
+    typingEl.className = 'chat-msg bot';
+
+    typingEl.innerHTML = `
+      <div class="chat-mini-avatar">🎯</div>
+
+      <div class="chat-bubble" style="padding:10px 14px">
+        <div class="chat-typing">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    `;
+
+    messagesEl.appendChild(typingEl);
+
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function removeChatTyping() {
+    if (typingEl) {
+      typingEl.remove();
+      typingEl = null;
     }
-  </script>
+  }
+
+  // ── Restart chat ─────────────────────────────────────────────────
+  function restartChat() {
+
+    messagesEl.innerHTML = '';
+
+    suggestEl.style.display = 'flex';
+
+    addChatMessage(
+      'bot',
+      "Hey! 👋 I'm the Decodes assistant. Ask me anything about our services."
+    );
+  }
+</script>
 
 </body>
 </html>
