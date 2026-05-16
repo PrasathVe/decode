@@ -1,161 +1,701 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Enquiry Form</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Decodes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --olive: #5C5F00;
+      --olive-mid: #7A7D00;
+      --olive-glow: #B8BC00;
+      --cream: #F6F4EE;
+      --ink: #0E0E0C;
+      --ink-2: #1C1C19;
+      --ink-3: #5a5a54;
+      --font-display: 'Poppins', Georgia, serif;
+      --font-ui: 'Syne', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', sans-serif;
-  }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-  body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #f4f6f9;
-  }
+    body {
+      font-family: var(--font-ui);
+      background: var(--ink);
+      color: var(--cream);
+      min-height: 100vh;
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-  .container {
-    background: #ffffff;
-    padding: 35px;
-    width: 380px;
-    border-radius: 12px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-  }
-
-  h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
-  }
-
-  .form-group {
-    margin-bottom: 18px;
-  }
-
-  label {
-    font-size: 14px;
-    margin-bottom: 6px;
-    display: block;
-    color: #555;
-  }
-
-  input, textarea {
-    width: 100%;
-    padding: 11px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 14px;
-    transition: all 0.25s ease;
-    background: #fafafa;
-  }
-
-  input:focus, textarea:focus {
-    border-color: #4a90e2;
-    background: #fff;
-    box-shadow: 0 0 0 2px rgba(74,144,226,0.1);
-  }
-
-  textarea {
-    resize: none;
-    height: 110px;
-  }
-
-  button {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 8px;
-    background: #caac33;
-    color: #fff;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  button:hover {
-    background: #ffd21f;
-  }
-@keyframes float {
-  0% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-.container {
-  background: #ffffff;
-  padding: 35px;
-  width: 380px;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-
-  animation: float 1s ease-in-out infinite;
-}
+    a { color: inherit; text-decoration: none; }
 
 
-.container:hover {
-  animation-play-state: paused;
-}
-  .footer-text {
-    text-align: center;
-    font-size: 12px;
-    color: #888;
-    margin-top: 15px;
-  }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.6;
+    }
 
-</style>
+
+    .cursor {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: var(--olive-glow);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s;
+      mix-blend-mode: difference;
+    }
+    img{
+      width: 175px;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(184,188,0,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 60px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      background: rgba(14,14,12,0.7);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+    }
+    .nav-logo-text em { color: var(--olive-glow); font-style: normal; }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(246,244,238,0.5);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--cream); }
+    .nav-active {
+      color: var(--olive-glow) !important;
+    }
+    .nav-back {
+      font-family: var(--font-mono) !important;
+      font-size: 11px !important;
+      padding: 10px 22px;
+      border: 1px solid rgba(246,244,238,0.1);
+      border-radius: 2px;
+      color: rgba(246,244,238,0.5) !important;
+      transition: all 0.25s !important;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-back:hover {
+      border-color: rgba(246,244,238,0.25) !important;
+      color: var(--cream) !important;
+    }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span { width: 22px; height: 1px; background: var(--cream); display: block; transition: 0.3s; }
+
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 80px;
+    }
+
+
+    .left-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 70px 100px 80px;
+      position: relative;
+      overflow: hidden;
+      border-right: 1px solid rgba(246,244,238,0.05);
+    }
+
+
+    .left-panel::before {
+      content: '?';
+      position: absolute;
+      right: -30px; bottom: -60px;
+      font-family: var(--font-display);
+      font-size: 320px;
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(184,188,0,0.05);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+
+    .left-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(184,188,0,0.2), transparent);
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .eyebrow-line { width: 28px; height: 1px; background: var(--olive-glow); flex-shrink: 0; }
+    .eyebrow span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--olive-glow);
+    }
+
+    .left-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 5vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--cream);
+      margin-bottom: 28px;
+      letter-spacing: -0.01em;
+    }
+    .left-title em {
+      font-style: italic;
+      color: var(--olive-glow);
+      font-weight: 600;
+      display: block;
+    }
+    .left-title .outline {
+      -webkit-text-stroke: 1px rgba(246,244,238,0.3);
+      color: transparent;
+      display: block;
+    }
+
+    .left-sub {
+      font-size: 14px;
+      color: rgba(246,244,238,0.35);
+      line-height: 1.85;
+      max-width: 380px;
+      margin-bottom: 56px;
+      font-weight: 400;
+    }
+
+
+    .contact-items {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      padding: 20px 24px;
+      border: 1px solid rgba(246,244,238,0.06);
+      border-radius: 3px;
+      background: rgba(246,244,238,0.02);
+      transition: border-color 0.3s, background 0.3s, transform 0.3s;
+      position: relative;
+    }
+    .contact-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 2px; height: 100%;
+      background: var(--olive-glow);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+      transform-origin: bottom;
+    }
+    .contact-item:hover {
+      border-color: rgba(184,188,0,0.15);
+      background: rgba(184,188,0,0.03);
+      transform: translateX(4px);
+    }
+    .contact-item:hover::before { transform: scaleY(1); }
+
+    .contact-icon {
+      width: 36px; height: 36px;
+      background: rgba(184,188,0,0.08);
+      border: 1px solid rgba(184,188,0,0.15);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .contact-info {}
+    .contact-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(246,244,238,0.25);
+      margin-bottom: 4px;
+    }
+    .contact-value {
+      font-size: 13px;
+      color: rgba(246,244,238,0.7);
+      font-weight: 500;
+    }
+
+
+    .right-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 80px 100px 70px;
+      position: relative;
+    }
+
+    .form-header {
+      margin-bottom: 48px;
+    }
+    .form-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .form-eyebrow-line { width: 20px; height: 1px; background: rgba(246,244,238,0.2); }
+    .form-eyebrow span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(246,244,238,0.3);
+    }
+    .form-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      color: var(--cream);
+      line-height: 1.2;
+    }
+    .form-title em { font-style: italic; color: var(--olive-glow); }
+
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(246,244,238,0.3);
+      display: block;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+    .form-group:focus-within label { color: var(--olive-glow); }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 14px 18px;
+      background: rgba(246,244,238,0.03);
+      border: 1px solid rgba(246,244,238,0.07);
+      border-radius: 3px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+      -webkit-appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: rgba(246,244,238,0.15);
+      font-weight: 400;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: rgba(184,188,0,0.35);
+      background: rgba(184,188,0,0.03);
+      box-shadow: 0 0 0 3px rgba(184,188,0,0.05);
+    }
+    .form-group textarea {
+      resize: none;
+      height: 120px;
+      line-height: 1.7;
+    }
+
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+
+    .submit-wrap {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--olive-glow);
+      color: var(--ink);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 16px 36px;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #c8cc00;
+      transform: translateX(-100%);
+      transition: transform 0.4s ease;
+    }
+    .btn-submit:hover::before { transform: translateX(0); }
+    .btn-submit span { position: relative; z-index: 1; }
+    .btn-submit .arrow { position: relative; z-index: 1; transition: transform 0.25s; }
+    .btn-submit:hover .arrow { transform: translateX(4px); }
+
+    .submit-note {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: rgba(246,244,238,0.2);
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+
+    .success-msg {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border: 1px solid rgba(74,222,128,0.2);
+      border-radius: 3px;
+      background: rgba(74,222,128,0.04);
+      margin-top: 16px;
+    }
+    .success-msg.show { display: flex; }
+    .success-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; flex-shrink: 0; }
+    .success-msg span {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: rgba(74,222,128,0.8);
+    }
+
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+
+    .footer-strip {
+      grid-column: 1 / -1;
+      border-top: 1px solid rgba(246,244,238,0.05);
+      padding: 28px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-logo-text {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(246,244,238,0.2);
+    }
+    .footer-logo-text em { color: var(--olive-glow); font-style: normal; }
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: rgba(246,244,238,0.15);
+    }
+
+
+    @media (max-width: 900px) {
+      .page { grid-template-columns: 1fr; }
+      .left-panel {
+        padding: 80px 40px 60px;
+        border-right: none;
+        border-bottom: 1px solid rgba(246,244,238,0.05);
+      }
+      .right-panel { padding: 60px 40px 80px; }
+      nav { padding: 0 24px; }
+      .nav-links {
+        position: fixed;
+        top: 80px; right: -100%;
+        flex-direction: column;
+        background: var(--ink-2);
+        width: 240px;
+        padding: 32px 24px;
+        height: calc(100vh - 80px);
+        border-left: 1px solid rgba(246,244,238,0.06);
+        transition: right 0.3s ease;
+        gap: 24px;
+      }
+      .nav-links.active { right: 0; }
+      .hamburger { display: flex; }
+      .form-row { grid-template-columns: 1fr; gap: 0; }
+      .footer-strip { padding: 24px 40px; flex-direction: column; gap: 12px; text-align: center; }
+    }
+    @media (max-width: 480px) {
+      .left-panel { padding: 60px 24px 40px; }
+      .right-panel { padding: 40px 24px 60px; }
+      .left-panel::before { display: none; }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="container">
-  <h2>Enquiry</h2>
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
 
-  <form action="https://formspree.io/f/mojpabgj" method="POST">
-    
-    <input type="hidden" name="_subject" value="New Enquiry Form Submission">
+  <nav>
+    <a href="index.html" class="nav-logo-text"><img src="image copy 2.png" alt="Decodes Logo"></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="contact.html" class="nav-active">Reach Out</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-    <div class="form-group">
-      <label>Name</label>
-      <input type="text" name="name" placeholder="Enter your name" required>
+  <div class="page">
+
+    <div class="left-panel">
+      <div class="eyebrow reveal">
+        <div class="eyebrow-line"></div>
+        <span>Get In Touch</span>
+      </div>
+      <h1 class="left-title reveal reveal-delay-1">
+        Let's start a<br>
+        <em>conversation.</em>
+        <span class="outline">Reach out.</span>
+      </h1>
+      <p class="left-sub reveal reveal-delay-2">Whether you're an individual seeking career clarity or an organization looking to transform your QA ecosystem — we're listening.</p>
+
+      <div class="contact-items">
+        <div class="contact-item reveal reveal-delay-2">
+          <div class="contact-icon">🎯</div>
+          <div class="contact-info">
+            <div class="contact-label">Skill Assessment</div>
+            <a href="https://topmate.io/decodes/2082631" target="_blank"><div class="contact-value">$5 · Book on Topmate</div></a>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-3">
+          <div class="contact-icon">⚡</div>
+          <div class="contact-info">
+            <div class="contact-label">Institutions and Employers</div>
+            <div class="contact-value">Initial discussion · No commitment</div>
+          </div>
+        </div>
+        <div class="contact-item reveal reveal-delay-4">
+          <div class="contact-icon">⏱</div>
+          <div class="contact-info">
+            <div class="contact-label">Response Time</div>
+            <div class="contact-value">We'll get back to you shortly</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" name="email" placeholder="Enter your email" required>
+    <div class="right-panel">
+      <div class="form-header">
+        <div class="form-eyebrow reveal">
+          <div class="form-eyebrow-line"></div>
+          <span>Send an Enquiry</span>
+        </div>
+        <h2 class="form-title reveal reveal-delay-1">Your details.<br><em>Our attention.</em></h2>
+      </div>
+
+      <form action="https://formspree.io/f/mojpabgj" method="POST" id="contact-form">
+        <input type="hidden" name="_subject" value="New Enquiry Form Submission" />
+
+        <div class="form-row">
+          <div class="form-group reveal reveal-delay-1">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group reveal reveal-delay-2">
+            <label for="phone">Contact Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="+91 00000 00000" required />
+          </div>
+        </div>
+
+        <div class="form-group reveal reveal-delay-2">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+        </div>
+
+        <div class="form-group reveal reveal-delay-3">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell us what you're looking for…" required></textarea>
+        </div>
+
+        <div class="submit-wrap reveal reveal-delay-4">
+          <button type="submit" class="btn-submit">
+            <span>Send Message</span>
+            <span class="arrow">→</span>
+          </button>
+          <p class="submit-note">We'll respond<br>within 24 hrs</p>
+        </div>
+
+        <div class="success-msg" id="success-msg">
+          <div class="success-dot"></div>
+          <span>Message sent — we'll be in touch soon.</span>
+        </div>
+      </form>
     </div>
 
-    <div class="form-group">
-      <label>Contact Number</label>
-      <input type="tel" name="phone" placeholder="Enter your number" required>
+    <div class="footer-strip">
+      <div class="footer-logo-text">><img src="image copy 2.png" alt="Decodes Logo"></div>
+      <p class="footer-copy">© 2026 Decodes. All rights reserved.</p>
     </div>
 
-    <div class="form-group">
-      <label>Message</label>
-      <textarea name="message" placeholder="Write your message..." required></textarea>
-    </div>
-
-    <button type="submit">Send Message</button>
-
-  </form>
-
-  <div class="footer-text">
-    We'll get back to you soon
   </div>
-</div>
 
+  <script>
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animateRing);
+    })();
+    document.querySelectorAll('a, button, input, textarea').forEach(el => {
+      el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '60px'; ring.style.height = '60px'; ring.style.borderColor = 'rgba(184,188,0,0.8)'; });
+      el.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(184,188,0,0.5)'; });
+    });
+
+    // Nav hamburger
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    // Trigger immediately for above-fold items
+    reveals.forEach(el => { obs.observe(el); });
+
+    // Formspree AJAX submit
+    const form = document.getElementById('contact-form');
+    const successMsg = document.getElementById('success-msg');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const btn = form.querySelector('.btn-submit');
+      btn.querySelector('span').textContent = 'Sending…';
+      btn.style.opacity = '0.7';
+      btn.style.pointerEvents = 'none';
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          form.reset();
+          successMsg.classList.add('show');
+          btn.querySelector('span').textContent = 'Sent ✓';
+          btn.style.background = '#4ade80';
+        } else {
+          btn.querySelector('span').textContent = 'Try Again';
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = 'auto';
+        }
+      } catch {
+        btn.querySelector('span').textContent = 'Try Again';
+        btn.style.opacity = '1';
+        btn.style.pointerEvents = 'auto';
+      }
+    });
+  </script>
 </body>
 </html>
