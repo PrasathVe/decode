@@ -118,5 +118,5 @@
     function restartChat() {
       messagesEl.innerHTML = '';
       suggestEl.style.display = 'flex';
-      addMessage('bot', "Hey! 👋 I'm the Decodes assistant. Ask me anything about our services.");
+      addMessage('bot', "Hey! 👋 I'm the Darsh. Ask me anything about our services.");
     }
