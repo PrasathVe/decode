@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Skill Assessment Report Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f3f7ec;color:#1e2a10;min-height:100vh;padding:32px 20px 80px}
+.shell{max-width:860px;margin:0 auto}
+
+.header{background:#354422;border-radius:12px;padding:22px 32px;margin-bottom:24px;text-align:center}
+.header h1{font-size:1.4rem;font-weight:600;color:#fff;letter-spacing:.05em}
+.header p{font-size:.8rem;color:#c8d9a8;margin-top:4px;letter-spacing:.12em;text-transform:uppercase}
+
+.name-row{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid #b8cc96;
+  border-radius:10px;padding:14px 20px;margin-bottom:24px}
+.name-row label{font-weight:600;font-size:.9rem;color:#354422;white-space:nowrap}
+.name-row input{flex:1;border:none;outline:none;font-size:1rem;color:#1e2a10;background:transparent}
+.name-row input::placeholder{color:#bbc9a0}
+
+.sec-hdr{font-size:.75rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:#5c7339;margin:24px 0 10px;padding-bottom:6px;border-bottom:1.5px solid #c8d9a8}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid1{display:grid;grid-template-columns:1fr;gap:10px}
+
+.fc{background:#fff;border:1.5px solid #b8cc96;border-radius:8px;padding:12px 14px}
+.fc:focus-within{border-color:#5c7339;box-shadow:0 0 0 3px rgba(92,115,57,.1)}
+.fc-label{font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7a9149;margin-bottom:5px}
+.fc input[type=text],.fc textarea{width:100%;border:none;outline:none;font-family:'DM Sans',sans-serif;
+  font-size:.9rem;color:#1e2a10;background:transparent;resize:none}
+.fc input::placeholder,.fc textarea::placeholder{color:#c0cfa0}
+.fc textarea{min-height:72px;line-height:1.6}
+
+.sel-wrap{position:relative}
+.sel-wrap::after{content:'▾';position:absolute;right:0;top:50%;transform:translateY(-50%);
+  color:#7a9149;pointer-events:none;font-size:.8rem}
+.fc select{width:100%;border:none;outline:none;appearance:none;background:transparent;
+  font-family:'DM Sans',sans-serif;font-size:.9rem;cursor:pointer;padding-right:16px}
+.vh{color:#b34040;font-weight:600}
+.vm{color:#c87e22;font-weight:600}
+.vl{color:#4a7a4a;font-weight:600}
+.vn{color:#c0cfa0}
+
+.btn-row{display:flex;justify-content:center;margin-top:36px}
+.btn{display:flex;align-items:center;gap:8px;background:#354422;color:#fff;border:none;
+  border-radius:8px;padding:13px 36px;font-family:'DM Sans',sans-serif;font-size:.95rem;
+  font-weight:600;cursor:pointer;transition:background .2s,transform .15s}
+.btn:hover{background:#4a5e2f;transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(16px);
+  background:#354422;color:#fff;padding:10px 24px;border-radius:24px;font-size:.85rem;
+  opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:9999}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* PDF */
+#pdf-src{position:fixed;left:-9999px;top:0;width:794px;background:#fff;font-family:'DM Sans',sans-serif;color:#1e2a10}
+.pw{padding:40px 44px 50px}
+.ph{background:#354422;margin:-40px -44px 28px;padding:22px 40px;text-align:center}
+.ph h1{font-size:1.3rem;font-weight:600;color:#fff;letter-spacing:.04em}
+.ph p{font-size:.72rem;color:#c8d9a8;margin-top:3px;letter-spacing:.12em;text-transform:uppercase}
+.ps{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5c7339;
+  margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid #c8d9a8}
+.pg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pg1{display:grid;grid-template-columns:1fr;gap:8px}
+.pf{background:#f3f7ec;border:1px solid #c8d9a8;border-radius:5px;padding:8px 11px}
+.pfl{font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5c7339;margin-bottom:3px}
+.pfv{font-size:.78rem;color:#1e2a10;word-break:break-word;white-space:pre-wrap;line-height:1.5}
+.pfv.ph2{color:#b34040;font-weight:700}
+.pfv.pm2{color:#c87e22;font-weight:700}
+.pfv.pl2{color:#4a7a4a;font-weight:700}
+.pfv.pe{color:#bbc9a0;font-style:italic}
+.pfoot{margin-top:24px;border-top:1px solid #c8d9a8;padding-top:8px;display:flex;
+  justify-content:space-between;font-size:.62rem;color:#7a9149}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="header">
+    <h1 id="live-heading">SKILL ASSESSMENT REPORT</h1>
+    <p>Decode · Diagnose · Disrupt</p>
+  </div>
+
+  <div class="name-row">
+    <label>Candidate Name</label>
+    <input type="text" id="person-name" placeholder="Enter full name…" autocomplete="off" oninput="updateHeading(this.value)"/>
+  </div>
+
+  <div class="sec-hdr">General Fields</div>
+  <div class="grid2" id="text-grid"></div>
+
+  <div class="sec-hdr">Skill Ratings</div>
+  <div class="grid2" id="drop-grid"></div>
+
+  <div class="sec-hdr">Observations & Notes</div>
+  <div class="grid1" id="area-grid"></div>
+
+  <div class="btn-row">
+    <button class="btn" id="dl-btn" onclick="downloadPDF()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Download PDF
+    </button>
+  </div>
+</div>
+
+<div id="pdf-src"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+function updateHeading(v){
+  document.getElementById("live-heading").textContent = v.trim()
+    ? "SKILL ASSESSMENT REPORT — " + v.trim().toUpperCase()
+    : "SKILL ASSESSMENT REPORT";
+}
+
+// Build fields
+const tg = document.getElementById("text-grid");
+for(let i=1;i<=18;i++) tg.innerHTML+=`<div class="fc"><div class="fc-label">Test ${i}</div><input type="text" id="t${i}" placeholder="Enter value…"/></div>`;
+
+const dg = document.getElementById("drop-grid");
+for(let i=1;i<=12;i++) dg.innerHTML+=`<div class="fc"><div class="fc-label">Test ${i}</div><div class="sel-wrap"><select id="d${i}" class="vn" onchange="styleSelect(this)"><option value="">— Select —</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></div></div>`;
+
+const ag = document.getElementById("area-grid");
+for(let i=1;i<=10;i++) ag.innerHTML+=`<div class="fc"><div class="fc-label">Test ${i}</div><textarea id="a${i}" placeholder="Enter observations…" rows="3"></textarea></div>`;
+
+function styleSelect(s){s.className=s.value==="High"?"vh":s.value==="Medium"?"vm":s.value==="Low"?"vl":"vn"}
+
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000)}
+
+function dropCls(v){return v==="High"?"ph2":v==="Medium"?"pm2":v==="Low"?"pl2":""}
+
+function field(label,value,cls){
+  const vc=cls||(!value?"pe":"");
+  return `<div class="pf"><div class="pfl">${label}</div><div class="pfv ${vc}">${value||"—"}</div></div>`;
+}
+
+async function downloadPDF(){
+  const btn=document.getElementById("dl-btn");
+  btn.textContent="⏳ Generating…"; btn.disabled=true;
+
+  const name=document.getElementById("person-name").value.trim()||"—";
+  const texts=[],drops=[],areas=[];
+  for(let i=1;i<=18;i++) texts.push(document.getElementById("t"+i).value.trim());
+  for(let i=1;i<=12;i++) drops.push(document.getElementById("d"+i).value);
+  for(let i=1;i<=10;i++) areas.push(document.getElementById("a"+i).value.trim());
+
+  const dateStr=new Date().toLocaleDateString("en-GB",{day:"2-digit",month:"long",year:"numeric"});
+
+  let tf="",df="",af="";
+  for(let i=0;i<18;i++) tf+=field("Test "+(i+1),texts[i]);
+  for(let i=0;i<12;i++) df+=field("Test "+(i+1),drops[i],dropCls(drops[i]));
+  for(let i=0;i<10;i++) af+=field("Test "+(i+1),areas[i]);
+
+  const title=name!=="—"?"SKILL ASSESSMENT REPORT — "+name.toUpperCase():"SKILL ASSESSMENT REPORT";
+
+  document.getElementById("pdf-src").innerHTML=`
+  <div class="pw">
+    <div class="ph"><h1>${title}</h1><p>Decode · Diagnose · Disrupt</p></div>
+    <div class="ps">General Fields</div><div class="pg2">${tf}</div>
+    <div class="ps">Skill Ratings</div><div class="pg2">${df}</div>
+    <div class="ps">Observations & Notes</div><div class="pg1">${af}</div>
+    <div class="pfoot"><span>${title}</span><span>Generated: ${dateStr}</span></div>
+  </div>`;
+
+  await new Promise(r=>setTimeout(r,500));
+
+  try{
+    const canvas=await html2canvas(document.getElementById("pdf-src"),{scale:2,backgroundColor:"#fff",logging:false});
+    const {jsPDF}=window.jspdf;
+    const pw=210,ph=297;
+    const ih=(canvas.height*pw)/canvas.width;
+    const pdf=new jsPDF("p","mm","a4");
+    let page=0,rem=ih;
+    while(rem>0){
+      if(page>0) pdf.addPage();
+      const sh=Math.min(rem,ph);
+      const sy=page*ph*(canvas.height/ih);
+      const sH=sh*(canvas.height/ih);
+      const sc=document.createElement("canvas");
+      sc.width=canvas.width; sc.height=sH;
+      sc.getContext("2d").drawImage(canvas,0,sy,canvas.width,sH,0,0,canvas.width,sH);
+      pdf.addImage(sc.toDataURL("image/jpeg",.95),"JPEG",0,0,pw,sh);
+      rem-=ph; page++;
+    }
+    const safe=(name==="—"?"candidate":name).replace(/[^a-z0-9]/gi,"_");
+    pdf.save(`Skill_Assessment_${safe}.pdf`);
+    toast("✅ PDF downloaded!");
+  } catch(e){toast("❌ Error — try again.");console.error(e)}
+
+  btn.innerHTML=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Download PDF`;
+  btn.disabled=false;
+}
+</script>
+</body>
+</html>

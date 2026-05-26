@@ -303,6 +303,9 @@
       opacity: 0;
       animation: fadeSlideUp 0.8s ease 2.1s forwards;
     }
+    .hero-actions span{
+      font-size: 15px;
+    }
 
     .btn-hero-primary {
       display: inline-flex;
@@ -332,10 +335,11 @@
     .btn-hero-primary:hover::before { transform: translateX(0); }
     .btn-hero-primary span, .btn-hero-primary svg { position: relative; z-index: 1; }
     .btn-hero-primary .price-tag {
-      background: rgba(14,14,12,0.2);
+      background: rgba(14, 14, 14, 0.442);
       padding: 3px 10px;
+      color: #fff;
       border-radius: 2px;
-      font-size: 10px;
+      font-size: 15 px;
     }
 
     .btn-hero-ghost {
