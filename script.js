@@ -1,11 +1,9 @@
-// ── Loader ──
     window.addEventListener('load', () => {
       setTimeout(() => {
         document.getElementById('loader').classList.add('hide');
       }, 1800);
     });
 
-    // ── Custom Cursor ──
     const cursor = document.getElementById('cursor');
     const ring = document.getElementById('cursor-ring');
     let mx = 0, my = 0, rx = 0, ry = 0;
@@ -27,7 +25,6 @@
       el.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(184,188,0,0.5)'; });
     });
 
-    // ── Navbar ──
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
     hamburger.addEventListener('click', () => {
@@ -39,14 +36,12 @@
       hamburger.classList.remove('open');
     }));
 
-    // ── Reveal on scroll ──
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
     }, { threshold: 0.1 });
     reveals.forEach(el => observer.observe(el));
 
-    // ── Chatbot ──
     const RESPONSES = [
       { keywords: ['signal', 's.i.g.n.a.l', 'framework', 'methodology'], answer: `The S.I.G.N.A.L Framework is our proprietary methodology that identifies your natural skill patterns and maps them to the right career path.<br><br>It goes beyond generic advice — it decodes <b>who you are</b> so you can make confident, well-aligned career decisions. 🎯<br><br><button onclick="restartChat()" class="restart-btn">Restart</button>` },
       { keywords: ['who is this service for', 'service', 'student', 'professional'], answer: `Designed for:<br><br>• Students unsure about the right career path<br>• Graduates feeling overwhelmed by choices<br>• Working professionals seeking better alignment<br>• Anyone planning a career switch<br><br><button onclick="restartChat()" class="restart-btn">Restart</button>` },

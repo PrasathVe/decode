@@ -3,13 +3,91 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Decodes — Skill Assessment & QA Consulting</title>
+  <title>Free Mini-Test — Decodes</title>
+  <meta name="description" content="Take Decodes' free mini-test: a quick first look at your skill pattern, built on the S.I.G.N.A.L Framework." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.ico" type="image/x-icon">
+
+  <!--
+    Only the pieces that don't exist on the homepage are styled here (sample question,
+    comparison table, FAQ). Everything else uses the classes from style.css, so the page
+    inherits the exact same look. Colours use currentColor so they work on any theme.
+  -->
+  <style>
+    .mt-block { padding: clamp(64px, 9vw, 110px) 0; }
+    .mt-muted { opacity: 0.72; }
+
+    /* Sample question */
+    .mt-sample-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+    .mt-sample-copy p { max-width: 42ch; opacity: 0.72; margin-top: 20px; }
+    .mt-card {
+      border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+      background: color-mix(in srgb, currentColor 4%, transparent);
+      padding: clamp(22px, 3vw, 36px);
+    }
+    .mt-card-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 18px; font-size: 0.8rem; opacity: 0.72; }
+    .mt-q { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(1.4rem, 2.3vw, 1.85rem); line-height: 1.3; margin: 0 0 22px; font-weight: 400; }
+    .mt-options { display: grid; gap: 10px; }
+    .mt-opt {
+      display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; text-align: left;
+      width: 100%; padding: 13px 16px; cursor: pointer; font: inherit; font-size: 0.92rem; line-height: 1.5;
+      color: inherit; background: transparent;
+      border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .mt-opt:hover { border-color: color-mix(in srgb, currentColor 50%, transparent); }
+    .mt-opt b {
+      font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.78rem;
+      width: 24px; height: 24px; display: grid; place-items: center;
+      border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+    }
+    .mt-opt[aria-pressed="true"] { border-color: var(--mt-accent, currentColor); background: color-mix(in srgb, currentColor 8%, transparent); }
+    .mt-opt[aria-pressed="true"] b { border-color: var(--mt-accent, currentColor); }
+    .mt-opt:focus-visible, .mt-faq summary:focus-visible { outline: 2px solid var(--mt-accent, currentColor); outline-offset: 3px; }
+
+    .mt-answer { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s ease; }
+    .mt-answer.open { grid-template-rows: 1fr; }
+    .mt-answer > div { overflow: hidden; }
+    .mt-answer-inner { margin-top: 22px; padding-top: 22px; border-top: 1px dashed color-mix(in srgb, currentColor 25%, transparent); font-size: 0.92rem; }
+    .mt-answer-inner p { opacity: 0.8; margin: 0 0 16px; }
+
+    /* Comparison table */
+    .mt-table-wrap { margin-top: 48px; overflow-x: auto; border: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+    .mt-table { width: 100%; border-collapse: collapse; min-width: 640px; }
+    .mt-table th, .mt-table td { padding: 18px 24px; text-align: left; vertical-align: top; font-size: 0.95rem; border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent); }
+    .mt-table thead th { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1rem; }
+    .mt-table tbody th { font-weight: 400; opacity: 0.72; width: 28%; }
+    .mt-table .mt-free { background: color-mix(in srgb, currentColor 6%, transparent); }
+    .mt-table .mt-no { opacity: 0.45; }
+    .mt-table tr:last-child th, .mt-table tr:last-child td { border-bottom: 0; }
+    .mt-table-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .mt-table-actions a { font-size: 0.85rem; }
+
+    /* FAQ */
+    .mt-faq { margin-top: 44px; max-width: 780px; border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+    .mt-faq details { border-bottom: 1px solid color-mix(in srgb, currentColor 18%, transparent); }
+    .mt-faq summary {
+      list-style: none; cursor: pointer; padding: 22px 0;
+      display: flex; justify-content: space-between; align-items: center; gap: 24px;
+      font-family: 'Syne', sans-serif; font-weight: 600; font-size: 1.05rem;
+    }
+    .mt-faq summary::-webkit-details-marker { display: none; }
+    .mt-faq summary::after { content: "+"; font-family: 'Poppins', sans-serif; font-weight: 300; font-size: 1.6rem; line-height: 1; transition: transform 0.25s; }
+    .mt-faq details[open] summary::after { transform: rotate(45deg); }
+    .mt-faq details p { margin: 0; padding: 0 0 24px; opacity: 0.72; max-width: 62ch; }
+    .mt-faq a { text-decoration: underline; }
+
+    /* Closing CTA */
+    .mt-final .hero-actions { margin-top: 36px; }
+    .mt-final p { margin-top: 20px; max-width: 46ch; opacity: 0.72; }
+
+    @media (max-width: 900px) { .mt-sample-grid { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { .mt-answer, .mt-opt, .mt-faq summary::after { transition: none; } }
+  </style>
 </head>
 <body>
 
@@ -23,68 +101,57 @@
     <div class="loader-bar"><div class="loader-bar-inner"></div></div>
   </div>
 
+  <!-- HEADER / NAV -->
   <nav>
-    <a href="#" class="nav-logo-text"><img src="image copy 2.png" alt="Decodes Logo"></a>
+    <a href="index.html" class="nav-logo-text"><img src="image copy 2.png" alt="Decodes Logo"></a>
     <ul class="nav-links" id="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#services">Services</a></li>
-      <li><a href="contact.html" class="nav-cta">Reach Out</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="contact.html">Reach Out</a></li>
+      <li><a href="mini-test.html" class="nav-cta">Free Mini-Test</a></li>
     </ul>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </nav>
 
+  <!-- HERO -->
   <section class="hero" id="home">
-    <div class="hero-counter">50</div>
+    <div class="hero-counter">0</div>
     <div class="hero-line"></div>
     <div class="hero-inner">
       <div class="hero-left">
         <div class="hero-eyebrow">
         </div>
         <h1 class="hero-title">
-          Know Your<br>
-          <span class="outline-text">Skill.</span>
-          <span class="line-2">Own Your Path.</span>
+          Try The<br>
+          <span class="outline-text">Mini-Test.</span>
+          <span class="line-2">Totally Free.</span>
         </h1>
-        <p class="hero-sub">We decode who you are — so your career decisions are built on clarity, not guesswork. Precision meets purpose.</p>
+        <p class="hero-sub">A quick first look at your skill pattern, built on our S.I.G.N.A.L Framework. See where your strengths point — before you spend a thing.</p>
         <div class="hero-actions">
-          <!-- Students -->
-<a href="https://topmate.io/decodes/2298512?utm_source=public_profile&utm_campaign=decodes"
-   class="btn-hero-primary"
-   target="_blank">
-  <span>Students</span>
-  <span class="price-tag">$46.99</span>
-</a>
-
-<!-- Professionals -->
-<a href="https://topmate.io/decodes/2300400?utm_source=public_profile&utm_campaign=decodes"
-   class="btn-hero-primary"
-   target="_blank">
-  <span>Professionals</span>
-  <span class="price-tag">$51.99</span>
-</a>
-
-          <a href="#services" class="btn-hero-ghost">
-            <span>Explore Services</span>
+          <a href="mini-test.html" class="btn-hero-primary" data-cta target="_blank">
+            <span>Start Free Mini-Test</span>
+            <span class="price-tag">$0</span>
+          </a>
+          <a href="#how" class="btn-hero-ghost">
+            <span>How It Works</span>
             <span class="arrow">→</span>
           </a>
         </div>
       </div>
       <div class="hero-right">
         <div class="hero-card">
-          <div class="hero-card-tag">For Individuals</div>
-          <h3>Skill Assessment &amp; Career Alignment</h3>
-          <p>Our S.I.G.N.A.L Framework identifies your natural strengths and maps them to roles that truly fit.</p>
-          <a href="https://topmate.io/decodes/2300400?utm_source=public_profile&utm_campaign=decodes" class="hero-card-link" target="_blank">Book Now →</a>
+          <div class="hero-card-tag">Free For Everyone</div>
+          <h3>A First Look At Your Skill Pattern</h3>
+          <p>The S.I.G.N.A.L Framework in a shorter form — so you can see how our approach works and whether it fits how you think.</p>
+          <a href="mini-test.html" class="hero-card-link" data-cta target="_blank">Start Free →</a>
         </div>
         <div class="hero-card">
-          <div class="hero-card-tag">For Institutions & Employers</div>
-          <h3>Group Skill Assessment for Institutions & Employers</h3>
-          <p>Helping institutions and employers identify strengths, skill gaps, and career alignment for smarter decisions and better growth.
-</p>
-          <a href="https://topmate.io/decodes/2300400?utm_source=public_profile&utm_campaign=decodes" class="hero-card-link" target="_blank">Initial Discussion →</a>
+          <div class="hero-card-tag">Want The Full Picture?</div>
+          <h3>Skill Assessment &amp; Career Alignment</h3>
+          <p>Your complete Natural Skill Pattern, career alignment path, role fit, and interview readiness.</p>
+          <a href="https://topmate.io/decodes/" class="hero-card-link" target="_blank">See Full Assessment →</a>
         </div>
       </div>
     </div>
@@ -92,83 +159,65 @@
 
   <div class="marquee-section">
     <div class="marquee-track">
-      <span>Skill Alignment</span><span class="dot">◆</span>
+      <span>Free Mini-Test</span><span class="dot">◆</span>
       <span>S.I.G.N.A.L Framework</span><span class="dot">◆</span>
-      <span>QA Transformation</span><span class="dot">◆</span>
+      <span>Skill Pattern</span><span class="dot">◆</span>
       <span>Career Clarity</span><span class="dot">◆</span>
-      <span>AI-Driven QA</span><span class="dot">◆</span>
       <span>Pattern Recognition</span><span class="dot">◆</span>
       <span>Role Alignment</span><span class="dot">◆</span>
-      <span>Legacy Modernization</span><span class="dot">◆</span>
-      <span>Skill Alignment</span><span class="dot">◆</span>
+      <span>Free Mini-Test</span><span class="dot">◆</span>
       <span>S.I.G.N.A.L Framework</span><span class="dot">◆</span>
-      <span>QA Transformation</span><span class="dot">◆</span>
+      <span>Skill Pattern</span><span class="dot">◆</span>
       <span>Career Clarity</span><span class="dot">◆</span>
-      <span>AI-Driven QA</span><span class="dot">◆</span>
       <span>Pattern Recognition</span><span class="dot">◆</span>
       <span>Role Alignment</span><span class="dot">◆</span>
-      <span>Legacy Modernization</span><span class="dot">◆</span>
     </div>
   </div>
 
   <div class="stats-bar reveal">
     <div class="stat-item">
-      <div class="stat-num">50<em>+</em></div>
-      <div class="stat-label">Institutional Partnerships</div>
+      <div class="stat-num"><em>$</em>0</div>
+      <div class="stat-label">Mini-Test</div>
     </div>
     <div class="stat-item">
       <div class="stat-num"><em>$</em>51.99</div>
-      <div class="stat-label">Skill Assessment</div>
+      <div class="stat-label">Full Skill Assessment</div>
     </div>
     <div class="stat-item">
       <div class="stat-num">500<em>+</em></div>
       <div class="stat-label">Skill Discovery</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">100<em>%</em></div>
-      <div class="stat-label">Clarity Guaranteed</div>
+      <div class="stat-num">50<em>+</em></div>
+      <div class="stat-label">Institutional Partnerships</div>
     </div>
   </div>
 
   <hr class="divider" />
 
-  <section class="why-section">
+  <!-- HOW IT WORKS -->
+  <section class="why-section" id="how">
     <div class="section-wrap">
       <div class="sec-eyebrow reveal">
         <div class="sec-eyebrow-line"></div>
-        <span>The Problem We Solve</span>
+        <span>How It Works</span>
       </div>
-      <h2 class="sec-title reveal reveal-delay-1">Most people work in roles<br><em>that don't fit them.</em></h2>
+      <h2 class="sec-title reveal reveal-delay-1">Three steps.<br><em>Zero cost to start.</em></h2>
       <div class="why-grid">
         <div class="why-card reveal" data-num="01">
           <div class="why-num">01</div>
-          <h3>The Problem</h3>
-          <p>Many people work in roles mismatched to their skills, causing poor performance, frustration, and low engagement.</p>
+          <h3>Take The Mini-Test</h3>
+          <p>Answer questions about how you approach problems, people, and work. No prep needed.</p>
         </div>
         <div class="why-card reveal reveal-delay-1" data-num="02">
           <div class="why-num">02</div>
-          <h3>Our Methodology</h3>
-          <p>With our S.I.G.N.A.L Framework, we identify individual strengths and align them with suitable roles for outcomes and satisfaction.</p>
+          <h3>Get Your First Read</h3>
+          <p>See an early indication of your skill pattern and where your strengths point.</p>
         </div>
         <div class="why-card reveal reveal-delay-2" data-num="03">
           <div class="why-num">03</div>
-          <h3>Who This Is For</h3>
-          <p>Designed for professionals who feel stuck, misaligned, or unsure about their next career move.</p>
-        </div>
-        <div class="why-card reveal" data-num="04">
-          <div class="why-num">04</div>
-          <h3>Why Skill Alignment</h3>
-          <p>Skill alignment matches abilities with roles, boosting productivity, confidence, and satisfaction while reducing burnout.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-1" data-num="05">
-          <div class="why-num">05</div>
-          <h3>Struggling QA Systems</h3>
-          <p>Built for organizations stuck with unstable releases, high defect leakage, and reactive QA processes that slow delivery.</p>
-        </div>
-        <div class="why-card reveal reveal-delay-2" data-num="06">
-          <div class="why-num">06</div>
-          <h3>Decision Makers</h3>
-          <p>For CTOs, QA leaders, and engineering heads looking to align quality engineering with business outcomes and ROI.</p>
+          <h3>Choose What's Next</h3>
+          <p>Stop here, or move on to the full assessment for your complete pattern and career alignment path.</p>
         </div>
       </div>
     </div>
@@ -176,59 +225,57 @@
 
   <hr class="divider" />
 
+  <!-- ABOUT THE MINI-TEST -->
   <section class="about-section" id="about">
     <div class="about-inner">
       <div class="about-left">
         <div class="sec-eyebrow reveal">
           <div class="sec-eyebrow-line"></div>
-          <span>Why Decodes</span>
+          <span>About The Mini-Test</span>
         </div>
         <div class="about-years reveal reveal-delay-1">20</div>
         <div class="about-years-label reveal reveal-delay-1">Years in Software Quality Engineering</div>
-        <h2 class="sec-title reveal reveal-delay-2">Experience that <em>spans</em> the spectrum.</h2>
+        <h2 class="sec-title reveal reveal-delay-2">Know who you are <em>before</em> choosing what to do.</h2>
       </div>
       <div class="about-right">
-        <p class="reveal">With experience spanning startups to Fortune 500s, we've successfully initiated, transformed, and optimized QA systems — helping teams audit, decode, and improve their existing QA ecosystems by identifying gaps, inefficiencies, and outdated practices.</p>
-        <p class="reveal reveal-delay-1">For individuals, we offer skill assessment and career alignment guidance — helping you understand <strong>who you are before choosing what to do.</strong> Through deep skill analysis and pattern recognition, we provide clarity on the right career path, role fit, and interview readiness.</p>
-        <a href="contact.html" class="btn-about reveal reveal-delay-2">Get In Touch →</a>
+        <p class="reveal">Many people work in roles mismatched to their skills, causing poor performance, frustration, and low engagement. Our full Skill Assessment helps you find a role that fits how you actually work.</p>
+        <p class="reveal reveal-delay-1">The mini-test is the front door. It uses the <strong>S.I.G.N.A.L Framework in a shorter form</strong>, so you can see how our approach works and whether it fits how you think — before you spend anything.</p>
+        <a href="mini-test.html" data-cta target="_blank" class="btn-about reveal reveal-delay-2">Start Free Mini-Test →</a>
       </div>
     </div>
   </section>
 
   <hr class="divider" />
 
-  <section id="services">
+  <!-- SAMPLE QUESTION -->
+  <section class="mt-block" id="sample">
     <div class="section-wrap">
-      <div class="services-header">
-        <div>
+      <div class="mt-sample-grid">
+        <div class="mt-sample-copy">
           <div class="sec-eyebrow reveal">
             <div class="sec-eyebrow-line"></div>
-            <span>What We Offer</span>
+            <span>A Taste Of The Test</span>
           </div>
-          <h2 class="sec-title reveal reveal-delay-1" style="margin-bottom:0">Our<br><em>Services</em></h2>
+          <h2 class="sec-title reveal reveal-delay-1">One question.<br><em>Zero pressure.</em></h2>
+          <p class="reveal reveal-delay-2">Pick whichever answer feels most like you. Nothing here is scored — it's just a preview of the kind of questions you'll see.</p>
         </div>
-        <p class="services-sub reveal reveal-delay-2">Four focused offerings. Each one designed to deliver clarity, transformation, and real results — whether you're an individual finding your path or an organization rebuilding its quality infrastructure.</p>
-      </div>
-      <div class="services-grid">
-        <div class="svc-card reveal">
-          <div class="svc-num">01</div>
-          <h3>Skill Assessment &amp; Career Alignment</h3>
-          <p>Discover your Natural Skill Pattern &amp; Career Alignment Path using our S.I.G.N.A.L Framework — so you focus in the right direction instead of wasting years in the wrong one.</p>
-        </div>
-        <div class="svc-card reveal reveal-delay-1">
-          <div class="svc-num">02</div>
-          <h3>AI Driven QA Transformation Consulting</h3>
-          <p>QA &amp; AI Maturity Assessment, Current QA Process Audit, Automation Coverage Analysis, AI Opportunity Mapping &amp; Cost Leakage Analysis.</p>
-        </div>
-        <div class="svc-card reveal reveal-delay-1">
-          <div class="svc-num">03</div>
-          <h3>QA Strategy &amp; Implementation Roadmap</h3>
-          <p>Tool Strategy, DevOps Alignment, AI Assisted Test Generation, Governance &amp; Metrics Framework for lasting quality infrastructure.</p>
-        </div>
-        <div class="svc-card reveal reveal-delay-2">
-          <div class="svc-num">04</div>
-          <h3>Advisory Retainer Services</h3>
-          <p>Monthly AI QA Steering, KPI Tracking, Leadership Alignment, Governance &amp; Metrics Framework. Ongoing strategic partnership.</p>
+        <div class="mt-card reveal reveal-delay-1">
+          <div class="mt-card-head"><span>Sample question</span><span>Not scored</span></div>
+          <p class="mt-q" id="mt-q">A release is an hour away and the checkout page just broke. What do you reach for first?</p>
+          <div class="mt-options" role="group" aria-labelledby="mt-q">
+            <button class="mt-opt" type="button" aria-pressed="false"><b>A</b><span>Reproduce the bug and trace it to the root cause.</span></button>
+            <button class="mt-opt" type="button" aria-pressed="false"><b>B</b><span>Get the right people together and agree on priorities.</span></button>
+            <button class="mt-opt" type="button" aria-pressed="false"><b>C</b><span>Write the test that makes sure it can't happen again.</span></button>
+            <button class="mt-opt" type="button" aria-pressed="false"><b>D</b><span>Ask users what they saw and what they were trying to do.</span></button>
+          </div>
+          <div class="mt-answer" id="mt-answer" aria-live="polite">
+            <div>
+              <div class="mt-answer-inner">
+                <p><strong>There's no right answer.</strong> One answer doesn't tell us much. The mini-test looks at the pattern across all your answers, and that pattern shows how you naturally work.</p>
+                <a href="mini-test.html" class="btn-hero-primary" data-cta target="_blank"><span>Take The Full Mini-Test</span><span class="price-tag">$0</span></a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -236,6 +283,99 @@
 
   <hr class="divider" />
 
+  <!-- FREE VS FULL -->
+  <section class="mt-block" id="compare">
+    <div class="section-wrap">
+      <div class="sec-eyebrow reveal">
+        <div class="sec-eyebrow-line"></div>
+        <span>Free Vs Full</span>
+      </div>
+      <h2 class="sec-title reveal reveal-delay-1">What you get free,<br><em>and what comes next.</em></h2>
+
+      <div class="mt-table-wrap reveal">
+        <table class="mt-table">
+          <thead>
+            <tr>
+              <th scope="col"><span style="position:absolute;left:-9999px">Feature</span></th>
+              <th scope="col" class="mt-free">Mini-Test</th>
+              <th scope="col">Full Skill Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Price</th>
+              <td class="mt-free">Free</td>
+              <td>$46.99 students<br>$51.99 professionals</td>
+            </tr>
+            <tr>
+              <th scope="row">Framework</th>
+              <td class="mt-free">S.I.G.N.A.L, short form</td>
+              <td>S.I.G.N.A.L, full depth</td>
+            </tr>
+            <tr>
+              <th scope="row">Skill pattern</th>
+              <td class="mt-free">An early read</td>
+              <td>Your complete Natural Skill Pattern</td>
+            </tr>
+            <tr>
+              <th scope="row">Career alignment path</th>
+              <td class="mt-free mt-no">Not included</td>
+              <td>Included</td>
+            </tr>
+            <tr>
+              <th scope="row">Role fit &amp; interview readiness</th>
+              <td class="mt-free mt-no">Not included</td>
+              <td>Included</td>
+            </tr>
+            <tr>
+              <th scope="row"></th>
+              <td class="mt-free"><a href="mini-test.html" class="hero-card-link" data-cta target="_blank">Start Free →</a></td>
+              <td>
+                <div class="mt-table-actions">
+                  <a href="https://topmate.io/decodes/2298512?utm_source=public_profile&utm_campaign=decodes" class="hero-card-link" target="_blank">Students →</a>
+                  <a href="https://topmate.io/decodes/2300400?utm_source=public_profile&utm_campaign=decodes" class="hero-card-link" target="_blank">Professionals →</a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- WHO IT'S FOR -->
+  <section class="why-section">
+    <div class="section-wrap">
+      <div class="sec-eyebrow reveal">
+        <div class="sec-eyebrow-line"></div>
+        <span>Who It's For</span>
+      </div>
+      <h2 class="sec-title reveal reveal-delay-1">Made for people<br><em>at a crossroads.</em></h2>
+      <div class="why-grid">
+        <div class="why-card reveal" data-num="01">
+          <div class="why-num">01</div>
+          <h3>Students</h3>
+          <p>Choosing a direction and want a real signal about your strengths instead of guessing.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-1" data-num="02">
+          <div class="why-num">02</div>
+          <h3>Professionals</h3>
+          <p>Feeling stuck, misaligned, or unsure about your next career move, and ready to check your instincts against a framework.</p>
+        </div>
+        <div class="why-card reveal reveal-delay-2" data-num="03">
+          <div class="why-num">03</div>
+          <h3>Institutions &amp; Employers</h3>
+          <p>Curious about group skill assessments? Try the mini-test to see the method, then get in touch to talk about your team.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- TESTIMONIALS -->
   <section class="testi-section">
     <div class="section-wrap">
       <div class="sec-eyebrow reveal">
@@ -245,20 +385,8 @@
       <h2 class="sec-title reveal reveal-delay-1">Real feedback.<br><em>Real direction.</em></h2>
       <div class="testi-grid">
         <div class="testi-card reveal">
-          <p class="testi-quote">"This completely changed how I approached my career after understanding my strengths."</p>
-          <div class="testi-user"><strong>Arjun K</strong><span>Software Engineer</span></div>
-        </div>
-        <div class="testi-card  reveal reveal-delay-1">
-          <p class="testi-quote">"Clarity I didn't get in 5 years, I got in one report."</p>
-          <div class="testi-user"><strong>Priya M</strong><span>QA Analyst</span></div>
-        </div>
-        <div class="testi-card reveal reveal-delay-2">
           <p class="testi-quote">"Finally understood where my strengths actually lie."</p>
           <div class="testi-user"><strong>Rahul S</strong><span>Student</span></div>
-        </div>
-        <div class="testi-card reveal">
-          <p class="testi-quote">"It helped me understand my true potential."</p>
-          <div class="testi-user"><strong>Vikram R</strong><span>Tech Lead</span></div>
         </div>
         <div class="testi-card testi-featured reveal reveal-delay-1">
           <p class="testi-quote">"This isn't advice. It's direction."</p>
@@ -268,18 +396,61 @@
           <p class="testi-quote">"Helped me align my career instead of guessing."</p>
           <div class="testi-user"><strong>Neha P</strong><span>Product Tester</span></div>
         </div>
-        <div class="testi-card reveal">
-          <p class="testi-quote">"I stopped switching paths after this."</p>
-          <div class="testi-user"><strong>Karthik D</strong><span>Developer</span></div>
-        </div>
-        <div class="testi-card reveal reveal-delay-1">
-          <p class="testi-quote">"Clear, practical, and brutally honest guidance."</p>
-          <div class="testi-user"><strong>Ananya V</strong><span>Graduate</span></div>
-        </div>
-        <div class="testi-card reveal reveal-delay-2">
-          <p class="testi-quote">"Discovered my true potential and found my passion."</p>
-          <div class="testi-user"><strong>Company Client</strong><span>Startup</span></div>
-        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- FAQ -->
+  <section class="mt-block" id="faq">
+    <div class="section-wrap">
+      <div class="sec-eyebrow reveal">
+        <div class="sec-eyebrow-line"></div>
+        <span>Before You Start</span>
+      </div>
+      <h2 class="sec-title reveal reveal-delay-1">Common <em>questions.</em></h2>
+      <div class="mt-faq reveal">
+        <details>
+          <summary>Is the mini-test really free?</summary>
+          <p>Yes. You can take it without paying, and there's no obligation to buy anything afterwards.</p>
+        </details>
+        <details>
+          <summary>How is it different from the full Skill Assessment?</summary>
+          <p>The mini-test is a shorter first look built on the same S.I.G.N.A.L Framework. The full assessment goes deeper and gives you your complete Natural Skill Pattern, your career alignment path, and guidance on role fit and interview readiness.</p>
+        </details>
+        <details>
+          <summary>What happens after I finish?</summary>
+          <p>You'll get your first read. From there you can stop, or continue to the full assessment if you want the complete picture.</p>
+        </details>
+        <details>
+          <summary>Can my institution or team use it?</summary>
+          <p>Yes. We run group skill assessments for institutions and employers. <a href="contact.html">Get in touch</a> and we'll set up an initial discussion.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- FINAL CTA -->
+  <section class="mt-block mt-final">
+    <div class="section-wrap">
+      <div class="sec-eyebrow reveal">
+        <div class="sec-eyebrow-line"></div>
+        <span>Ready?</span>
+      </div>
+      <h2 class="sec-title reveal reveal-delay-1">Get your first look.<br><em>It's free.</em></h2>
+      <p class="reveal reveal-delay-2">Take the mini-test and see where your skills point.</p>
+      <div class="hero-actions reveal reveal-delay-2">
+        <a href="mini-test.html" class="btn-hero-primary" data-cta target="_blank">
+          <span>Start Free Mini-Test</span>
+          <span class="price-tag">$0</span>
+        </a>
+        <a href="contact.html" class="btn-hero-ghost">
+          <span>Ask Us A Question</span>
+          <span class="arrow">→</span>
+        </a>
       </div>
     </div>
   </section>
@@ -289,9 +460,9 @@
     <div class="footer-logo-text"><img src="image copy 2.png" alt="Decodes Logo"></div>
     <p class="footer-copy">© 2026 Decodes. All rights reserved.</p>
     <div class="footer-links">
-      <a href="#">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
+      <a href="index.html">Home</a>
+      <a href="index.html#about">About</a>
+      <a href="index.html#services">Services</a>
       <a href="contact.html">Contact</a>
     </div>
   </footer>
@@ -299,7 +470,6 @@
   <button id="chat-launcher" aria-label="Open chat">
     <svg viewBox="0 0 24 24" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-      
     </svg>
   </button>
 
@@ -324,8 +494,6 @@
       <input id="chat-input" type="text" placeholder="Ask anything about Decodes…" autocomplete="off" />
       <button id="chat-send-btn" onclick="sendChatMessage()" aria-label="Send">
         <svg id='Email_Send_24' width='24' height='24' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'><rect width='24' height='24' stroke='none' fill='#000000' opacity='0'/>
-
-
 <g transform="matrix(0.83 0 0 0.83 12 12)" >
 <path style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" transform=" translate(-15, -15)" d="M 26 3 C 25.904026142042714 3.0006583581949826 25.80864687942315 3.0151297178191654 25.716797 3.0429688 C 25.68976046237127 3.050306917202327 25.663044228078622 3.0587779232018644 25.636719 3.0683594000000003 L 3.6503906 10.060547 L 3.6503906 10.064453 C 3.2597585643776337 10.210219758159939 3.0005624088856773 10.583057535461814 3 11 C 3.0007408225869683 11.349224834461092 3.1836114229399137 11.672765252777186 3.4824218999999994 11.853516 L 10.164062 17.154297 L 23.373047 6.6269531 L 12.845703 19.835938 L 18.142578 26.513672 C 18.323084316844625 26.815171933439384 18.648596100047126 26.99980154931267 19 27 C 19.416942566116045 26.999437528711955 19.789780373159353 26.740241193134263 19.935547 26.349609 L 19.939453 26.349609 L 26.9375 4.34375 C 26.94465083777267 4.323779951047257 26.951164466503297 4.303587435180673 26.957031 4.2832031 C 26.984870159411347 4.191353198395892 26.999341586528 4.095973901208165 27 4 C 27 3.4477152501692068 26.552284749830793 3 26 3 z" stroke-linecap="round" />
 </g>
@@ -335,5 +503,22 @@
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // One place to set where every "Start Free Mini-Test" button goes.
+    // Replace with your free mini-test link.
+    var MINI_TEST_URL = "mini-test.html";
+    document.querySelectorAll("[data-cta]").forEach(function (a) { a.href = MINI_TEST_URL; });
+
+    // Sample question
+    var opts = document.querySelectorAll(".mt-opt");
+    var answer = document.getElementById("mt-answer");
+    opts.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        opts.forEach(function (o) { o.setAttribute("aria-pressed", "false"); });
+        btn.setAttribute("aria-pressed", "true");
+        answer.classList.add("open");
+      });
+    });
+  </script>
 </body>
 </html>

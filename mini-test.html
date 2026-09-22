@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>How You Work Through Things</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600;1,700;1,800&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+
+    :root {
+      --bg: #0E0E0C;
+      --bg-panel: #17170F;
+
+      --line: rgba(255,255,255,0.09);
+      --line-strong: rgba(255,255,255,0.16);
+
+      --text: #F4F3EC;
+      --text-soft: #9C9C91;
+
+      --accent: #C9DA2E;
+      --accent-dim: rgba(201,218,46,0.14);
+
+      --c-analyst: #6FA8C9;
+      --c-improver: #9BC24A;
+      --c-solver: #E0A64B;
+      --c-builder: #C97FD1;
+      --c-connector: #E0616F;
+    }
+
+
+    /* =========================================
+       RESET
+    ========================================= */
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    /* =========================================
+       ANIMATIONS
+    ========================================= */
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeSlideOut {
+      from { opacity: 1; transform: translateY(0); }
+      to   { opacity: 0; transform: translateY(-10px); }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes railPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(201,218,46,0.45); }
+      100% { box-shadow: 0 0 0 6px rgba(201,218,46,0); }
+    }
+
+    @keyframes letterRise {
+      from { opacity: 0; transform: translateX(-4px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+
+    /* =========================================
+       PREMIUM ANIMATIONS (NO ROTATION)
+    ========================================= */
+
+    @keyframes premiumShine {
+      0%, 30%   { left: -80%; }
+      70%, 100% { left: 150%; }
+    }
+
+    @keyframes premiumDot {
+      0%, 100% { opacity: 0.35; transform: scale(0.75); }
+      50%      { opacity: 0.9;  transform: scale(1.15); }
+    }
+
+    @keyframes premiumAppear {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+
+    /* =========================================
+       PAGE
+    ========================================= */
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+
+      background: var(--bg);
+      color: var(--text);
+
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+
+      display: flex;
+      justify-content: center;
+
+      padding: 48px 20px 80px;
+
+      background-image:
+        radial-gradient(
+          circle at 12% 8%,
+          rgba(201,218,46,0.05),
+          transparent 45%
+        );
+    }
+
+    .display {
+      font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .frame {
+      width: 100%;
+      max-width: 640px;
+    }
+
+
+    /* =========================================
+       HEADER
+    ========================================= */
+
+    header.masthead {
+      display: flex;
+
+      align-items: baseline;
+      justify-content: space-between;
+
+      border-bottom: 1px solid var(--line-strong);
+
+      padding-bottom: 16px;
+      margin-bottom: 36px;
+    }
+
+    header.masthead .name {
+      font-family: 'Archivo', sans-serif;
+
+      font-size: 1.15rem;
+      font-weight: 700;
+
+      letter-spacing: -0.01em;
+    }
+
+    header.masthead .name em {
+      font-style: italic;
+      font-weight: 800;
+
+      color: var(--accent);
+    }
+
+    header.masthead .issue {
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+
+    /* =========================================
+       PROGRESS RAIL
+    ========================================= */
+
+    .rail {
+      display: flex;
+      gap: 8px;
+
+      margin-bottom: 30px;
+    }
+
+    .rail .tick {
+      flex: 1;
+
+      height: 3px;
+
+      background: var(--line-strong);
+
+      position: relative;
+
+      transition: background 0.4s ease;
+    }
+
+    .rail .tick.done {
+      background: var(--accent);
+    }
+
+    .rail .tick.current {
+      background: var(--text);
+
+      animation: railPulse 1.4s ease-out infinite;
+
+      border-radius: 2px;
+    }
+
+
+    /* =========================================
+       QUESTION CARD
+    ========================================= */
+
+    .card {
+      background: var(--bg-panel);
+
+      border: 1px solid var(--line);
+
+      padding: 40px 36px;
+
+      animation: fadeSlideUp 0.45s cubic-bezier(0.22,0.61,0.36,1) both;
+    }
+
+    .card.leaving {
+      animation: fadeSlideOut 0.2s ease both;
+    }
+
+    .q-num {
+      font-family: 'Archivo', sans-serif;
+
+      font-style: italic;
+      font-weight: 700;
+
+      color: var(--accent);
+
+      font-size: 0.95rem;
+
+      margin-bottom: 10px;
+    }
+
+    .q-text {
+      font-family: 'Archivo', sans-serif;
+
+      font-size: 1.55rem;
+      font-weight: 700;
+
+      letter-spacing: -0.01em;
+
+      line-height: 1.25;
+
+      margin: 0 0 28px;
+
+      max-width: 30ch;
+    }
+
+
+    /* =========================================
+       OPTIONS
+    ========================================= */
+
+    .options {
+      display: flex;
+      flex-direction: column;
+
+      gap: 10px;
+    }
+
+    .option {
+      display: flex;
+      align-items: flex-start;
+
+      gap: 14px;
+
+      text-align: left;
+
+      background: rgba(255,255,255,0.02);
+
+      border: 1px solid var(--line);
+
+      padding: 14px 16px;
+
+      font-family: 'Inter', sans-serif;
+
+      font-size: 0.98rem;
+
+      color: var(--text);
+
+      cursor: pointer;
+
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease;
+
+      animation: letterRise 0.35s ease both;
+
+      animation-delay: calc(var(--i,0) * 60ms);
+    }
+
+    .option:hover {
+      border-color: var(--accent);
+
+      background: var(--accent-dim);
+
+      transform: translateX(3px);
+    }
+
+    .option:active {
+      transform: translateX(3px) scale(0.985);
+    }
+
+    .option.picked {
+      border-color: var(--accent);
+
+      background: var(--accent-dim);
+    }
+
+    .option:focus-visible {
+      outline: 2px solid var(--accent);
+
+      outline-offset: 2px;
+    }
+
+    .option .letter {
+      font-family: 'Archivo', sans-serif;
+
+      font-weight: 800;
+
+      color: var(--accent);
+
+      flex-shrink: 0;
+
+      width: 1.1em;
+    }
+
+
+    /* =========================================
+       NAVIGATION
+    ========================================= */
+
+    .nav-row {
+      display: flex;
+
+      justify-content: space-between;
+      align-items: center;
+
+      margin-top: 22px;
+    }
+
+    .back-btn {
+      background: none;
+
+      border: none;
+
+      color: var(--text-soft);
+
+      font-family: 'Inter', sans-serif;
+
+      font-size: 0.85rem;
+
+      cursor: pointer;
+
+      padding: 6px 0;
+
+      visibility: hidden;
+    }
+
+    .back-btn.show {
+      visibility: visible;
+    }
+
+    .back-btn:hover {
+      color: var(--text);
+    }
+
+    .q-count {
+      font-size: 0.8rem;
+
+      color: var(--text-soft);
+    }
+
+
+    /* =========================================
+       REPORT
+    ========================================= */
+
+    .report {
+      display: none;
+    }
+
+    .report.show {
+      display: block;
+    }
+
+    #quizView.hide {
+      display: none;
+    }
+
+
+    /* =========================================
+       REPORT HERO
+    ========================================= */
+
+    .report-hero {
+      background: var(--bg-panel);
+
+      border: 1px solid var(--line);
+
+      padding: 44px 36px 36px;
+
+      margin-bottom: 4px;
+
+      animation: fadeSlideUp 0.5s cubic-bezier(0.22,0.61,0.36,1) both;
+    }
+
+    .report-eyebrow {
+      font-size: 0.8rem;
+
+      font-weight: 600;
+
+      letter-spacing: 0.02em;
+
+      color: var(--accent);
+
+      margin: 0 0 10px;
+
+      animation: letterRise 0.4s ease both;
+
+      animation-delay: 0.1s;
+    }
+
+    .report-title {
+      font-family: 'Archivo', sans-serif;
+
+      font-size: 2.2rem;
+
+      font-weight: 800;
+
+      font-style: italic;
+
+      letter-spacing: -0.01em;
+
+      line-height: 1.1;
+
+      color: var(--accent);
+
+      margin: 0 0 18px;
+
+      max-width: 20ch;
+
+      animation: popIn 0.5s cubic-bezier(0.22,0.61,0.36,1) both;
+
+      animation-delay: 0.15s;
+    }
+
+    .report-blurb {
+      font-size: 1rem;
+
+      line-height: 1.65;
+
+      color: var(--text-soft);
+
+      max-width: 46ch;
+
+      margin: 0;
+
+      animation: letterRise 0.4s ease both;
+
+      animation-delay: 0.3s;
+    }
+
+
+    /* =========================================
+       BREAKDOWN
+    ========================================= */
+
+    .breakdown {
+      border: 1px solid var(--line);
+
+      border-top: none;
+
+      padding: 30px 36px 36px;
+
+      animation: fadeSlideUp 0.5s cubic-bezier(0.22,0.61,0.36,1) both;
+
+      animation-delay: 0.2s;
+    }
+
+    .breakdown h3 {
+      font-family: 'Archivo', sans-serif;
+
+      font-weight: 700;
+
+      font-size: 1.05rem;
+
+      margin: 0 0 22px;
+    }
+
+    .bar-row {
+      margin-bottom: 16px;
+
+      opacity: 0;
+
+      animation: letterRise 0.4s ease both;
+
+      animation-delay: calc(0.35s + var(--i,0) * 90ms);
+    }
+
+    .bar-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .bar-label {
+      display: flex;
+
+      justify-content: space-between;
+
+      font-size: 0.88rem;
+
+      margin-bottom: 6px;
+    }
+
+    .bar-label .trait-name {
+      color: var(--text);
+    }
+
+    .bar-label .trait-score {
+      color: var(--text-soft);
+
+      font-variant-numeric: tabular-nums;
+    }
+
+    .bar-track {
+      height: 8px;
+
+      background: rgba(255,255,255,0.07);
+
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+
+      width: 0%;
+
+      transition: width 0.7s cubic-bezier(0.22,0.61,0.36,1);
+    }
+
+
+    /* =========================================
+       ANSWERS STRIP
+    ========================================= */
+
+    .answers-strip {
+      margin-top: 4px;
+
+      padding: 18px 36px;
+
+      border: 1px solid var(--line);
+
+      border-top: none;
+
+      font-size: 0.82rem;
+
+      color: var(--text-soft);
+
+      display: flex;
+
+      justify-content: space-between;
+
+      flex-wrap: wrap;
+
+      gap: 8px 20px;
+
+      animation: letterRise 0.4s ease both;
+
+      animation-delay: 0.85s;
+    }
+
+
+    /* =========================================
+       RESULT ACTIONS
+    ========================================= */
+
+    .result-actions {
+      display: flex;
+
+      /* top-aligned so the note under Go-Premium
+         doesn't push the two buttons out of line */
+      align-items: flex-start;
+
+      gap: 10px;
+
+      margin-top: 28px;
+
+      padding-top: 4px;
+    }
+
+
+    /* =========================================
+       TAKE IT AGAIN
+    ========================================= */
+
+    .retake-btn {
+      background: var(--accent);
+
+      color: #14150C;
+
+      border: none;
+
+      height: 48px;
+
+      font-family: 'Inter', sans-serif;
+
+      font-size: 0.85rem;
+
+      font-weight: 700;
+
+      letter-spacing: 0.03em;
+
+      text-transform: uppercase;
+
+      padding: 0 28px;
+
+      cursor: pointer;
+
+      transition:
+        background 0.15s ease,
+        transform 0.15s ease;
+
+      animation: letterRise 0.4s ease both;
+
+      animation-delay: 0.95s;
+    }
+
+    .retake-btn:hover {
+      background: #DCEB4F;
+
+      transform: translateY(-2px);
+    }
+
+    .retake-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .retake-btn:focus-visible {
+      outline: 2px solid var(--text);
+
+      outline-offset: 2px;
+    }
+
+
+    /* =========================================
+       GO PREMIUM + NOTE
+    ========================================= */
+
+    .premium-wrap {
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: flex-start;
+
+      gap: 8px;
+    }
+
+    .premium-note {
+      margin: 0;
+
+      font-size: 0.75rem;
+
+      line-height: 1.4;
+
+      color: var(--text-soft);
+
+      animation: premiumAppear 0.45s ease both;
+
+      animation-delay: 1.15s;
+    }
+
+    .premium-btn {
+      position: relative;
+
+      isolation: isolate;
+
+      height: 48px;
+
+      padding: 0 20px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      background: #15150F;
+
+      border: 1px solid rgba(201,218,46,0.45);
+
+      border-radius: 0;
+
+      color: var(--accent);
+
+      font-family: 'Inter', sans-serif;
+
+      font-size: 0.85rem;
+
+      font-weight: 600;
+
+      letter-spacing: 0.01em;
+
+      cursor: pointer;
+
+      overflow: hidden;
+
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.025),
+        0 8px 22px rgba(0,0,0,0.18);
+
+      transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+
+      animation: premiumAppear 0.45s ease both;
+
+      animation-delay: 1s;
+    }
+
+    /* Very subtle inner light */
+    .premium-btn::before {
+      content: "";
+
+      position: absolute;
+
+      inset: 0;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(201,218,46,0.035),
+          transparent
+        );
+
+      opacity: 0;
+
+      transition: opacity 0.25s ease;
+
+      pointer-events: none;
+    }
+
+    /* Horizontal shine */
+    .premium-btn::after {
+      content: "";
+
+      position: absolute;
+
+      top: 0;
+
+      left: -80%;
+
+      width: 45%;
+
+      height: 100%;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,0.13),
+          transparent
+        );
+
+      filter: blur(4px);
+
+      animation: premiumShine 4.5s ease-in-out infinite;
+
+      pointer-events: none;
+    }
+
+    .premium-content {
+      position: relative;
+
+      z-index: 2;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+    }
+
+    .premium-crown {
+      font-size: 16px;
+
+      line-height: 1;
+
+      color: var(--accent);
+
+      opacity: 0.9;
+
+      transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+    }
+
+    .premium-text {
+      color: #D9E28A;
+
+      transition: color 0.25s ease;
+    }
+
+    .premium-dot {
+      width: 4px;
+
+      height: 4px;
+
+      border-radius: 50%;
+
+      background: var(--accent);
+
+      box-shadow: 0 0 7px rgba(201,218,46,0.65);
+
+      opacity: 0.7;
+
+      animation: premiumDot 2.2s ease-in-out infinite;
+    }
+
+    .premium-btn:hover {
+      background: #191A11;
+
+      border-color: rgba(201,218,46,0.9);
+
+      color: var(--accent);
+
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 26px rgba(0,0,0,0.25),
+        0 0 18px rgba(201,218,46,0.06);
+    }
+
+    .premium-btn:hover::before {
+      opacity: 1;
+    }
+
+    .premium-btn:hover .premium-crown {
+      transform: translateY(-1px);
+
+      opacity: 1;
+    }
+
+    .premium-btn:hover .premium-text {
+      color: #F0F3C9;
+    }
+
+    .premium-btn:active {
+      transform: translateY(0) scale(0.985);
+    }
+
+    .premium-btn:focus-visible {
+      outline: 2px solid var(--accent);
+
+      outline-offset: 3px;
+    }
+
+
+    /* =========================================
+       PREMIUM MODAL (STUDENT / EMPLOYEE)
+    ========================================= */
+
+    .modal {
+      position: fixed;
+
+      inset: 0;
+
+      z-index: 100;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .modal[hidden] {
+      display: none;
+    }
+
+    .modal-backdrop {
+      position: absolute;
+
+      inset: 0;
+
+      background: rgba(6,6,4,0.78);
+
+      animation: fadeIn 0.2s ease both;
+    }
+
+    .modal-panel {
+      position: relative;
+
+      width: 100%;
+
+      max-width: 460px;
+
+      background: var(--bg-panel);
+
+      border: 1px solid var(--line-strong);
+
+      padding: 36px 32px 32px;
+
+      animation: popIn 0.25s cubic-bezier(0.22,0.61,0.36,1) both;
+    }
+
+    .modal-close {
+      position: absolute;
+
+      top: 10px;
+
+      right: 12px;
+
+      width: 36px;
+
+      height: 36px;
+
+      background: none;
+
+      border: none;
+
+      color: var(--text-soft);
+
+      font-size: 1.5rem;
+
+      line-height: 1;
+
+      cursor: pointer;
+
+      transition: color 0.15s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--text);
+    }
+
+    .modal-close:focus-visible {
+      outline: 2px solid var(--accent);
+
+      outline-offset: 2px;
+    }
+
+    .modal-title {
+      font-family: 'Archivo', sans-serif;
+
+      font-size: 1.4rem;
+
+      font-weight: 700;
+
+      letter-spacing: -0.01em;
+
+      line-height: 1.25;
+
+      margin: 0 0 8px;
+    }
+
+    .modal-sub {
+      margin: 0 0 24px;
+
+      font-size: 0.92rem;
+
+      line-height: 1.5;
+
+      color: var(--text-soft);
+    }
+
+    .modal-options {
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+
+      gap: 10px;
+    }
+
+    .modal-option {
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 4px;
+
+      padding: 18px 16px;
+
+      background: rgba(255,255,255,0.02);
+
+      border: 1px solid var(--line);
+
+      color: var(--text);
+
+      text-decoration: none;
+
+      transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        transform 0.15s ease;
+    }
+
+    .modal-option:hover {
+      border-color: var(--accent);
+
+      background: var(--accent-dim);
+
+      transform: translateY(-2px);
+    }
+
+    .modal-option:active {
+      transform: translateY(0) scale(0.985);
+    }
+
+    .modal-option:focus-visible {
+      outline: 2px solid var(--accent);
+
+      outline-offset: 2px;
+    }
+
+    .modal-option .opt-title {
+      font-family: 'Archivo', sans-serif;
+
+      font-size: 1.15rem;
+
+      font-weight: 700;
+    }
+
+    .modal-option .opt-sub {
+      font-size: 0.8rem;
+
+      color: var(--text-soft);
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 480px) {
+
+      .card {
+        padding: 30px 22px;
+      }
+
+      .q-text {
+        font-size: 1.35rem;
+      }
+
+      .report-title {
+        font-size: 1.8rem;
+      }
+
+      .breakdown,
+      .report-hero,
+      .answers-strip {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .result-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+      }
+
+      .retake-btn,
+      .premium-btn {
+        width: 100%;
+      }
+
+      .premium-wrap {
+        align-items: stretch;
+      }
+
+      .premium-note {
+        text-align: center;
+      }
+
+      .modal-panel {
+        padding: 32px 22px 24px;
+      }
+
+      .modal-options {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    /* =========================================
+       REDUCED MOTION
+    ========================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .bar-fill,
+      .card,
+      .card.leaving,
+      .option,
+      .rail .tick,
+      .rail .tick.current,
+      .report-hero,
+      .report-eyebrow,
+      .report-title,
+      .report-blurb,
+      .breakdown,
+      .bar-row,
+      .answers-strip,
+      .retake-btn,
+      .premium-btn,
+      .premium-btn::before,
+      .premium-btn::after,
+      .premium-dot,
+      .premium-note,
+      .modal-backdrop,
+      .modal-panel,
+      .modal-option {
+        animation: none !important;
+
+        transition: none !important;
+      }
+
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+  <div class="frame">
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+
+    <header class="masthead">
+
+      <span class="name display">
+        Know Your <em>Style.</em>
+      </span>
+
+      <span class="issue">
+        5 questions
+      </span>
+
+    </header>
+
+
+    <!-- =====================================
+         QUIZ
+    ====================================== -->
+
+    <div id="quizView">
+
+      <div class="rail" id="rail"></div>
+
+      <div class="card">
+
+        <div class="q-num" id="qNum">
+          Question 1
+        </div>
+
+        <p class="q-text display" id="qText"></p>
+
+        <div class="options" id="options"></div>
+
+      </div>
+
+      <div class="nav-row">
+
+        <button class="back-btn" id="backBtn" type="button">
+          ← back
+        </button>
+
+        <span class="q-count" id="qCount"></span>
+
+      </div>
+
+    </div>
+
+
+    <!-- =====================================
+         REPORT
+    ====================================== -->
+
+    <div class="report" id="reportView">
+
+      <div class="report-hero">
+
+        <p class="report-eyebrow">
+          Your result
+        </p>
+
+        <h1 class="report-title display" id="reportTitle"></h1>
+
+        <p class="report-blurb" id="reportBlurb"></p>
+
+      </div>
+
+      <div class="breakdown">
+
+        <h3 class="display">
+          Full breakdown
+        </h3>
+
+        <div id="bars"></div>
+
+      </div>
+
+      <div class="answers-strip" id="answersStrip"></div>
+
+
+      <!-- =================================
+           ACTION BUTTONS
+      ================================== -->
+
+      <div class="result-actions">
+
+        <button class="retake-btn" id="retakeBtn" type="button">
+          Take it again
+        </button>
+
+        <div class="premium-wrap">
+
+          <button
+            class="premium-btn"
+            id="premiumBtn"
+            type="button"
+            aria-label="Go Premium"
+            aria-haspopup="dialog"
+          >
+
+            <span class="premium-content">
+
+              <span class="premium-crown" aria-hidden="true">
+                ♛
+              </span>
+
+              <span class="premium-text">
+                Go-Premium
+              </span>
+
+              <span class="premium-dot" aria-hidden="true"></span>
+
+            </span>
+
+          </button>
+
+          <p class="premium-note">
+            Costs less than your weekend expense.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================
+       PREMIUM MODAL
+       Replace the two href values below with
+       your real Student / Employee links.
+  ======================================== -->
+
+  <div
+    class="modal"
+    id="premiumModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modalTitle"
+    hidden
+  >
+
+    <div class="modal-backdrop" data-close></div>
+
+    <div class="modal-panel">
+
+      <button
+        class="modal-close"
+        type="button"
+        aria-label="Close"
+        data-close
+      >
+        &times;
+      </button>
+
+      <h2 class="modal-title display" id="modalTitle">
+        Which one are you?
+      </h2>
+
+      <p class="modal-sub">
+        Pick one and we'll take you to the right page.
+      </p>
+
+      <div class="modal-options">
+
+        <a
+          class="modal-option"
+          href="https://topmate.io/decodes/2298512?utm_source=public_profile&utm_campaign=decodes"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="opt-title">Student</span>
+          <span class="opt-sub">I'm still studying</span>
+        </a>
+
+        <a
+          class="modal-option"
+          href="https://topmate.io/decodes/2300400?utm_source=public_profile&utm_campaign=decodes"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="opt-title">Employee</span>
+          <span class="opt-sub">I'm working</span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================
+       JAVASCRIPT
+  ======================================== -->
+
+  <script>
+
+    (function () {
+
+
+      /* =====================================
+         TRAITS
+      ====================================== */
+
+      const traits = [
+        'Analytical Explorer',
+        'Systematic Improver',
+        'Practical Problem Solver',
+        'Creative Builder',
+        'People-Centred Thinker'
+      ];
+
+
+      /* =====================================
+         TRAIT META
+      ====================================== */
+
+      const traitMeta = {
+
+        'Analytical Explorer': {
+          color: '#6FA8C9',
+          short: 'Analyst',
+          title: 'The Pattern Seeker',
+          blurb:
+            'You default to understanding before acting. Faced with something new, you take it apart, look for the mechanism, and trust that clarity beats speed.'
+        },
+
+        'Systematic Improver': {
+          color: '#9BC24A',
+          short: 'Improver',
+          title: 'The Structure Architect',
+          blurb:
+            'You look for the structure underneath things and tighten it. A process, a plan, a clear expectation — you would rather build the frame than wing it.'
+        },
+
+        'Practical Problem Solver': {
+          color: '#E0A64B',
+          short: 'Solver',
+          title: 'The Hands-On Solver',
+          blurb:
+            'You learn by doing. Given something unfamiliar, your instinct is to get your hands on it and let the experience teach you faster than explanation would.'
+        },
+
+        'Creative Builder': {
+          color: '#C97FD1',
+          short: 'Builder',
+          title: 'The Possibility Maker',
+          blurb:
+            'You are drawn to what could exist rather than what already does. You explore possibilities, make connections others miss, and build things that did not have a template.'
+        },
+
+        'People-Centred Thinker': {
+          color: '#E0616F',
+          short: 'Connector',
+          title: 'The People Reader',
+          blurb:
+            'You start with who is involved. Before you solve anything, you want to understand the people affected and what they actually need from the outcome.'
+        }
+
+      };
+
+
+      /* =====================================
+         QUESTIONS
+      ====================================== */
+
+      const questions = [
+
+        {
+          text: "You're handed something you've never done before. What's your first move?",
+          options: {
+            A: { label: 'Break it down and understand how it works',
+                 scores: ['Analytical Explorer', 'Systematic Improver'] },
+            B: { label: 'Try it myself and learn through experience',
+                 scores: ['Practical Problem Solver', 'Creative Builder'] },
+            C: { label: 'Ask someone who already knows it',
+                 scores: ['People-Centred Thinker', 'Practical Problem Solver'] },
+            D: { label: 'Search different information and connect the dots',
+                 scores: ['Analytical Explorer', 'Creative Builder'] },
+            E: { label: 'Move on and come back when I have more context',
+                 scores: ['Practical Problem Solver', 'Analytical Explorer'] }
+          }
+        },
+
+        {
+          text: 'A task lands on your desk with no clear instructions. What do you do?',
+          options: {
+            A: { label: 'Create my own structure and start solving',
+                 scores: ['Systematic Improver', 'Analytical Explorer'] },
+            B: { label: 'Explore possibilities before deciding',
+                 scores: ['Creative Builder', 'Analytical Explorer'] },
+            C: { label: 'Find someone experienced and understand expected outcome',
+                 scores: ['People-Centred Thinker', 'Systematic Improver'] },
+            D: { label: 'Start doing it and figure it out',
+                 scores: ['Practical Problem Solver', 'Creative Builder'] },
+            E: { label: 'Wait until expectations become clearer',
+                 scores: ['Systematic Improver', 'People-Centred Thinker'] }
+          }
+        },
+
+        {
+          text: 'Which of these gives you the most satisfaction?',
+          options: {
+            A: { label: 'Solving a difficult problem',
+                 scores: ['Analytical Explorer', 'Practical Problem Solver'] },
+            B: { label: 'Creating or building something new',
+                 scores: ['Creative Builder', 'Practical Problem Solver'] },
+            C: { label: 'Understanding people and behaviour',
+                 scores: ['People-Centred Thinker', 'Analytical Explorer'] },
+            D: { label: 'Organising or improving something',
+                 scores: ['Systematic Improver', 'Practical Problem Solver'] },
+            E: { label: 'Learning about a genuinely interesting topic',
+                 scores: ['Analytical Explorer', 'Creative Builder'] }
+          }
+        },
+
+        {
+          text: "Something keeps going wrong. What's your instinct?",
+          options: {
+            A: { label: 'Finding out why it happens',
+                 scores: ['Analytical Explorer', 'Systematic Improver'] },
+            B: { label: 'Finding a new way to solve it',
+                 scores: ['Creative Builder', 'Analytical Explorer'] },
+            C: { label: 'Understanding who is affected and what they need',
+                 scores: ['People-Centred Thinker', 'Practical Problem Solver'] },
+            D: { label: 'Turning the solution into a clear process',
+                 scores: ['Systematic Improver', 'Analytical Explorer'] },
+            E: { label: 'Getting into it and figuring it out',
+                 scores: ['Practical Problem Solver', 'Creative Builder'] }
+          }
+        },
+
+        {
+          text: 'Which of these sounds most like you?',
+          options: {
+            A: { label: 'I notice patterns and connections others overlook',
+                 scores: ['Analytical Explorer', 'Creative Builder'] },
+            B: { label: 'I become deeply absorbed when I’m interested in something',
+                 scores: ['Creative Builder', 'Analytical Explorer'] },
+            C: { label: 'I think about making things better or more efficient',
+                 scores: ['Systematic Improver', 'Practical Problem Solver'] },
+            D: { label: 'I understand best by actually doing',
+                 scores: ['Practical Problem Solver', 'Creative Builder'] },
+            E: { label: 'I think about possibilities others haven’t considered',
+                 scores: ['Creative Builder', 'Analytical Explorer'] }
+          }
+        }
+
+      ];
+
+
+      /* =====================================
+         STATE
+      ====================================== */
+
+      let current = 0;
+
+      const answers = new Array(questions.length).fill(null);
+
+
+      /* =====================================
+         DOM
+      ====================================== */
+
+      const railEl     = document.getElementById('rail');
+      const qNumEl     = document.getElementById('qNum');
+      const qTextEl    = document.getElementById('qText');
+      const optionsEl  = document.getElementById('options');
+      const qCountEl   = document.getElementById('qCount');
+      const backBtn    = document.getElementById('backBtn');
+      const quizView   = document.getElementById('quizView');
+      const reportView = document.getElementById('reportView');
+      const cardEl     = document.querySelector('.card');
+
+
+      /* =====================================
+         RAIL
+      ====================================== */
+
+      function renderRail() {
+
+        railEl.innerHTML = '';
+
+        questions.forEach((_, i) => {
+
+          const tick = document.createElement('div');
+
+          tick.className =
+            'tick' +
+            (i < current ? ' done' : i === current ? ' current' : '');
+
+          railEl.appendChild(tick);
+
+        });
+
+      }
+
+
+      /* =====================================
+         QUESTION
+      ====================================== */
+
+      function paintQuestion() {
+
+        renderRail();
+
+        const q = questions[current];
+
+        qNumEl.textContent = 'Question ' + (current + 1);
+
+        qTextEl.textContent = q.text;
+
+        qCountEl.textContent = (current + 1) + ' of ' + questions.length;
+
+        backBtn.classList.toggle('show', current > 0);
+
+        optionsEl.innerHTML = '';
+
+        Object.keys(q.options).forEach((letter, i) => {
+
+          const opt = q.options[letter];
+
+          const btn = document.createElement('button');
+
+          btn.className = 'option';
+
+          btn.style.setProperty('--i', i);
+
+          btn.type = 'button';
+
+          btn.innerHTML =
+            '<span class="letter">' + letter + '</span>' +
+            '<span>' + opt.label + '</span>';
+
+          btn.addEventListener('click', () => selectAnswer(letter, btn));
+
+          optionsEl.appendChild(btn);
+
+        });
+
+        cardEl.classList.remove('leaving');
+
+        cardEl.style.animation = 'none';
+
+        void cardEl.offsetWidth;
+
+        cardEl.style.animation = '';
+
+      }
+
+
+      /* =====================================
+         TRANSITION
+      ====================================== */
+
+      function renderQuestion(direction) {
+
+        if (direction === undefined) {
+
+          paintQuestion();
+
+          return;
+
+        }
+
+        cardEl.classList.add('leaving');
+
+        window.setTimeout(() => {
+
+          paintQuestion();
+
+        }, 180);
+
+      }
+
+
+      /* =====================================
+         SELECT ANSWER
+      ====================================== */
+
+      function selectAnswer(letter, btnEl) {
+
+        answers[current] = letter;
+
+        if (btnEl) {
+
+          btnEl.classList.add('picked');
+
+        }
+
+        window.setTimeout(() => {
+
+          if (current < questions.length - 1) {
+
+            current++;
+
+            renderQuestion('forward');
+
+          } else {
+
+            showReport();
+
+          }
+
+        }, 200);
+
+      }
+
+
+      /* =====================================
+         BACK
+      ====================================== */
+
+      backBtn.addEventListener('click', () => {
+
+        if (current > 0) {
+
+          current--;
+
+          renderQuestion('back');
+
+        }
+
+      });
+
+
+      /* =====================================
+         TITLE
+      ====================================== */
+
+      function makeTitle(winners) {
+
+        if (winners.length === 1) {
+
+          return traitMeta[winners[0]].title;
+
+        }
+
+        const ordered = traits.filter(t => winners.includes(t));
+
+        return 'The ' +
+          ordered.map(t => traitMeta[t].short).join('-') +
+          ' Hybrid';
+
+      }
+
+
+      /* =====================================
+         COUNT ANIMATION
+      ====================================== */
+
+      function animateCount(el, target, duration) {
+
+        const start = performance.now();
+
+        function tick(now) {
+
+          const progress = Math.min((now - start) / duration, 1);
+
+          const eased = 1 - Math.pow(1 - progress, 3);
+
+          el.textContent = Math.round(eased * target);
+
+          if (progress < 1) {
+
+            requestAnimationFrame(tick);
+
+          }
+
+        }
+
+        requestAnimationFrame(tick);
+
+      }
+
+
+      /* =====================================
+         HYBRID BLURB
+      ====================================== */
+
+      function hybridBlurb(winners) {
+
+        const parts = winners.map(w => traitMeta[w].short.toLowerCase());
+
+        return (
+          'You scored evenly across more than one style — mainly ' +
+          parts.join(' and ') +
+          '. In practice that means your approach shifts with the problem rather than settling into one default mode.'
+        );
+
+      }
+
+
+      /* =====================================
+         SHOW REPORT
+      ====================================== */
+
+      function showReport() {
+
+        const scores = {};
+
+        traits.forEach(t => scores[t] = 0);
+
+        answers.forEach((letter, i) => {
+
+          const opt = questions[i].options[letter];
+
+          scores[opt.scores[0]] += 2;
+
+          scores[opt.scores[1]] += 1;
+
+        });
+
+        const maxScore = Math.max(...traits.map(t => scores[t]));
+
+        const winners = traits.filter(t => scores[t] === maxScore);
+
+        document.getElementById('reportTitle').textContent =
+          makeTitle(winners);
+
+        document.getElementById('reportBlurb').textContent =
+          winners.length === 1
+            ? traitMeta[winners[0]].blurb
+            : hybridBlurb(winners);
+
+
+        /* ===============================
+           BARS
+        ================================ */
+
+        const barsEl = document.getElementById('bars');
+
+        barsEl.innerHTML = '';
+
+        const maxPossible = questions.length * 2;
+
+        traits
+          .slice()
+          .sort((a, b) => scores[b] - scores[a])
+          .forEach((t, i) => {
+
+            const row = document.createElement('div');
+
+            row.className = 'bar-row';
+
+            row.style.setProperty('--i', i);
+
+            row.innerHTML =
+              '<div class="bar-label">' +
+                '<span class="trait-name">' + t + '</span>' +
+                '<span class="trait-score">0</span>' +
+              '</div>' +
+              '<div class="bar-track">' +
+                '<div class="bar-fill" style="background:' +
+                  traitMeta[t].color + '"></div>' +
+              '</div>';
+
+            barsEl.appendChild(row);
+
+            const fill = row.querySelector('.bar-fill');
+
+            const scoreEl = row.querySelector('.trait-score');
+
+            const delay = 350 + i * 90;
+
+            window.setTimeout(() => {
+
+              fill.style.width =
+                Math.round((scores[t] / maxPossible) * 100) + '%';
+
+              animateCount(scoreEl, scores[t], 700);
+
+            }, delay);
+
+          });
+
+
+        /* ===============================
+           ANSWERS
+        ================================ */
+
+        const stripEl = document.getElementById('answersStrip');
+
+        stripEl.innerHTML =
+          answers
+            .map((answer, i) =>
+              '<span>Q' + (i + 1) + ' — ' + answer + '</span>'
+            )
+            .join('');
+
+        stripEl.style.display = 'flex';
+
+
+        /* ===============================
+           SHOW
+        ================================ */
+
+        quizView.classList.add('hide');
+
+        reportView.classList.add('show');
+
+      }
+
+
+      /* =====================================
+         RETAKE
+      ====================================== */
+
+      document.getElementById('retakeBtn').addEventListener('click', () => {
+
+        current = 0;
+
+        answers.fill(null);
+
+        reportView.classList.remove('show');
+
+        quizView.classList.remove('hide');
+
+        renderQuestion();
+
+      });
+
+
+      /* =====================================
+         GO PREMIUM — STUDENT / EMPLOYEE PICKER
+         (links live on the <a> tags in the modal)
+      ====================================== */
+
+      const premiumBtn   = document.getElementById('premiumBtn');
+      const premiumModal = document.getElementById('premiumModal');
+
+      let lastFocus = null;
+
+      function openPremiumModal() {
+
+        lastFocus = document.activeElement;
+
+        premiumModal.hidden = false;
+
+        document.body.style.overflow = 'hidden';
+
+        const first = premiumModal.querySelector('.modal-option');
+
+        if (first) first.focus();
+
+      }
+
+      function closePremiumModal() {
+
+        premiumModal.hidden = true;
+
+        document.body.style.overflow = '';
+
+        if (lastFocus) lastFocus.focus();
+
+      }
+
+      premiumBtn.addEventListener('click', openPremiumModal);
+
+      premiumModal.querySelectorAll('[data-close]').forEach(el => {
+
+        el.addEventListener('click', closePremiumModal);
+
+      });
+
+      /* close once a link is chosen */
+      premiumModal.querySelectorAll('.modal-option').forEach(el => {
+
+        el.addEventListener('click', () => {
+
+          window.setTimeout(closePremiumModal, 0);
+
+        });
+
+      });
+
+      document.addEventListener('keydown', e => {
+
+        if (premiumModal.hidden) return;
+
+        if (e.key === 'Escape') {
+
+          closePremiumModal();
+
+          return;
+
+        }
+
+        /* keep Tab inside the dialog */
+        if (e.key === 'Tab') {
+
+          const items = Array.from(
+            premiumModal.querySelectorAll('.modal-close, .modal-option')
+          );
+
+          const firstEl = items[0];
+          const lastEl  = items[items.length - 1];
+
+          if (e.shiftKey && document.activeElement === firstEl) {
+
+            e.preventDefault();
+            lastEl.focus();
+
+          } else if (!e.shiftKey && document.activeElement === lastEl) {
+
+            e.preventDefault();
+            firstEl.focus();
+
+          }
+
+        }
+
+      });
+
+
+      /* =====================================
+         START
+      ====================================== */
+
+      renderQuestion();
+
+    })();
+
+  </script>
+
+</body>
+</html>

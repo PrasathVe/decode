@@ -549,7 +549,6 @@
         <em>conversation.</em>
         <span class="outline">Reach out.</span>
       </h1>
-      <p class="left-sub reveal reveal-delay-2">Whether you're an individual seeking career clarity or an organization looking to transform your QA ecosystem — we're listening.</p>
 
       <div class="contact-items">
         <div class="contact-item reveal reveal-delay-2">
@@ -645,22 +644,18 @@
       el.addEventListener('mouseleave', () => { cursor.style.width = '10px'; cursor.style.height = '10px'; ring.style.width = '40px'; ring.style.height = '40px'; ring.style.borderColor = 'rgba(184,188,0,0.5)'; });
     });
 
-    // Nav hamburger
     const hamburger = document.getElementById('hamburger');
     const navLinks = document.getElementById('nav-links');
     hamburger.addEventListener('click', () => {
       navLinks.classList.toggle('active');
     });
 
-    // Scroll reveal
     const reveals = document.querySelectorAll('.reveal');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
     }, { threshold: 0.1 });
-    // Trigger immediately for above-fold items
     reveals.forEach(el => { obs.observe(el); });
 
-    // Formspree AJAX submit
     const form = document.getElementById('contact-form');
     const successMsg = document.getElementById('success-msg');
     form.addEventListener('submit', async e => {
